@@ -6,7 +6,7 @@ const userController = {
     const { email, password } = req.body;
     const result = await userService.login(email, password);
     return res.status(StatusCodes.OK).json(result);
-  }
+  },
 };
 
 module.exports = userController;
