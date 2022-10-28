@@ -32,7 +32,7 @@
   "homepage": "https://github.com/betrybe/sd-0x-project-delivery-app#readme",
   "devDependencies": {
     "@faker-js/faker": "6.0.0",
-    "axios": "0.26.1",
+    "axios": "^0.26.1",
     "dotenv": "16.0.0",
     "jest": "27.5.1",
     "jest-puppeteer": "6.1.0",
@@ -53,5 +53,9 @@
       "__TESTDESC__": true,
       "__TESTFILE__": true
     }
+  },
+  "dependencies": {
+    "http-status-codes": "^2.2.0",
+    "md5": "^2.3.0"
   }
 }

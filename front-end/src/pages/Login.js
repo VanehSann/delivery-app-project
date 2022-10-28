@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import { userLogin } from '../redux/actions/user';
+import { requestLogin } from '../utils/axios';
 
 class Login extends Component {
   constructor() {
@@ -10,8 +11,8 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      role: '',
       isDisabled: true,
+      errorHandling: false,
     };
   }
 
@@ -40,16 +41,34 @@ class Login extends Component {
     return emailRegex.test(email);
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
 
     const { history, dispatchLoginChange } = this.props;
-    const { email, role } = this.state;
+    const { email, password } = this.state;
 
-    dispatchLoginChange(email, role);
+    try {
+      const { role } = await requestLogin('/login', { email, password });
+      dispatchLoginChange(email, role);
+      this.setState({
+        errorHandling: false,
+      });
 
-    history.push('/customer/products');
-    // Adicionar switch/case para roles customer, seller e admin.
+      switch (role) {
+      case 'administrator':
+        history.push('/admin/manage');
+        break;
+      case 'seller':
+        history.push('/seller/orders');
+        break;
+      default:
+        history.push('/customer/products');
+      }
+    } catch (error) {
+      this.setState({
+        errorHandling: true,
+      });
+    }
   };
 
   redirectToRegister = () => {
@@ -58,7 +77,7 @@ class Login extends Component {
   };
 
   render() {
-    const { email, password, isDisabled } = this.state;
+    const { email, password, isDisabled, errorHandling } = this.state;
 
     return (
       <fieldset>
@@ -101,9 +120,12 @@ class Login extends Component {
         >
           Registrar
         </button>
-        <span data-testid="common_login__element-invalid-email">
-          Elemento oculto - Mensagens de erro pra email invalido
-        </span>
+        { errorHandling && (
+          <span data-testid="common_login__element-invalid-email">
+            DADOS INVÁLIDOS PARA LOGIN
+          </span>
+        ) }
+
       </fieldset>
     );
   }
