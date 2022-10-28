@@ -24,18 +24,18 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'salesProducts',
   });
 
-  salesProduct.associate = (models) => {
-    models.sales.belongsToMany(models.products, {
-      through: salesProduct,
-      foreignKey: 'sale_id',
-      otherKey: 'product_id',
-    });
-    models.products.belongsToMany(models.sales, {
-      through: salesProduct,
-      foreignKey: 'product_id',
-      otherKey: 'sale_id',
-    });
-  };
+  // salesProduct.associate = (models) => {
+  //   models.sales.belongsToMany(models.products, {
+  //     through: salesProduct,
+  //     foreignKey: 'sale_id',
+  //     otherKey: 'product_id',
+  //   });
+  //   models.products.belongsToMany(models.sales, {
+  //     through: salesProduct,
+  //     foreignKey: 'product_id',
+  //     otherKey: 'sale_id',
+  //   });
+  // };
 
   return salesProduct;
 };

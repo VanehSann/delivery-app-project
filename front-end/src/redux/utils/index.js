@@ -1,0 +1,3 @@
+const SET_USER_ACTION = 'SET_USER_ACTION';
+
+export default SET_USER_ACTION;

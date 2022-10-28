@@ -53,5 +53,9 @@
       "__TESTDESC__": true,
       "__TESTFILE__": true
     }
+  },
+  "dependencies": {
+    "http-status-codes": "^2.2.0",
+    "md5": "^2.3.0"
   }
 }
