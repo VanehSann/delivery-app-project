@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import Login from './pages/Login';
 import './App.css';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 class App extends Component {
   render() {
@@ -11,6 +12,7 @@ class App extends Component {
           <Redirect to="/login" />
         </Route>
         <Route exact path="/login" component={ Login } />
+        <Route exact path="/register" component={ Register } />
       </Switch>
     );
   }

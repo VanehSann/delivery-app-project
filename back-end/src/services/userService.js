@@ -11,6 +11,15 @@ const userService = {
 
     return userData;
   },
+ register: async (mail, password) => {
+    const decodedPassword = md5(password);
+    const result = await user
+          .findOne({ where: { email: mail, password: decodedPassword }, raw: true });
+    const { name, email, role } = result;
+    const userData = { name, email, role };
+
+    if (!result) return userData;
+  },
 };
 
 module.exports = userService;

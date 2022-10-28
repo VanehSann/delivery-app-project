@@ -13,6 +13,15 @@ const validate = {
 
     next();
   },
+ register: async (req, res, next) => {
+    const { name, email, password } = req.body;
+    const decodedPassword = md5(password);
+    const result = await user.findOne({ where: { email, password: decodedPassword }, raw: true });
+
+    if (!name && result) return res.status(StatusCodes.NOT_FOUND).json(notFoundUser);
+
+    next();
+  },
 };
 
 module.exports = validate;
