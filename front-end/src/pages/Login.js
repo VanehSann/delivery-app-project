@@ -142,7 +142,7 @@ class Login extends Component {
 // const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchLoginChange: (email, role) => dispatch(userLogin(email, role)),
+  dispatchLoginChange: (name, email, role) => dispatch(userLogin(name, email, role)),
 });
 
 Login.propTypes = {
