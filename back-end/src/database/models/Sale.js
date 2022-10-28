@@ -31,16 +31,16 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'sales',
   });
 
-  // sale.associate = (models) => {
-  //   sale.belongsTo(models.users, {
-  //     foreignKey: 'user_id',
-  //     as: 'userId',
-  //   });
-  //   sale.belongsTo(models.users, {
-  //     foreignKey: 'seller_id',
-  //     as: 'sellerId',
-  //   });
-  // };
+  sale.associate = (models) => {
+    sale.belongsTo(models.user, {
+      foreignKey: 'user_id',
+      as: 'userId',
+    });
+    sale.belongsTo(models.user, {
+      foreignKey: 'seller_id',
+      as: 'sellerId',
+    });
+  };
 
   return sale;
 };

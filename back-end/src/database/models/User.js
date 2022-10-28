@@ -21,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'users',
   });
 
-  // user.associate = (models) => {
-  //   user.hasMany(models.sales, {
-  //     foreignKey: 'id',
-  //   });
-  // };
+  user.associate = (models) => {
+    user.hasMany(models.sale, {
+      foreignKey: 'id',
+    });
+  };
 
   return user;
 };
