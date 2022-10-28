@@ -1,5 +1,5 @@
-import { Component } from "react";
-import Header from '../Components/Header'
+import React, { Component } from 'react';
+import Header from '../components/Header';
 
 class Client extends Component {
   constructor() {
@@ -7,22 +7,25 @@ class Client extends Component {
 
     this.state = {};
   }
+
+  render() {
+    return (
+      <div>
+        <Header />
+
+        <div>
+          <h2 data-testid=""> Produtos </h2>
+          <ul>
+            {/* { products.map(() => {
+              <li>
+                <produtos />
+              </li>;
+            }) } */}
+          </ul>
+        </div>
+      </div>
+    );
+  }
 }
-
-<>
-<Header />
-
-<div>
-  <h2 data-testid = ""> Produtos </h2>
-  <ul>
-    { products.map(() => {
-      <li>
-        <produtos />
-      </li>
-    })}
-  </ul>
-</div>
-
-</>
 
 export default connect()(Client);
