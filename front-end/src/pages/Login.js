@@ -48,8 +48,8 @@ class Login extends Component {
     const { email, password } = this.state;
 
     try {
-      const { role } = await requestLogin('/login', { email, password });
-      dispatchLoginChange(email, role);
+      const { name, role } = await requestLogin('/login', { email, password });
+      dispatchLoginChange(name, email, role);
       this.setState({
         errorHandling: false,
       });
@@ -134,7 +134,7 @@ class Login extends Component {
 // const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchLoginChange: (email, role) => dispatch(userLogin(email, role)),
+  dispatchLoginChange: (name, email, role) => dispatch(userLogin(name, email, role)),
 });
 
 Login.propTypes = {
