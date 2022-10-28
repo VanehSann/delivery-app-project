@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Header from '../components/Header';
+import NavBar from '../components/NavBar';
 import { requestData } from '../utils/axios';
 
 class Client extends Component {
@@ -18,8 +18,7 @@ class Client extends Component {
   render() {
     return (
       <div>
-        <Header />
-
+        <NavBar />
         <div>
           <ul>
             {/* { products.map(() => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 
-class Header extends React.Component {
+class NavBar extends React.Component {
   constructor() {
     super();
 
@@ -48,8 +48,8 @@ const mapStateToProps = ({ userReducer }) => ({
   state: userReducer.name,
 });
 
-Header.propTypes = {
+NavBar.propTypes = {
   state: propTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps)(NavBar);
