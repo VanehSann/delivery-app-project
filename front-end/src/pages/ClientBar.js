@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { requestData } from '../utils/axios';
 
@@ -34,4 +35,3 @@ class Client extends Component {
 }
 
 export default connect(null, null)(Client);
-// export default Client;

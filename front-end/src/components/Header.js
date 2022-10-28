@@ -11,9 +11,10 @@ class Header extends React.Component {
 
   render() {
     const { state } = this.props;
+
     return (
       <div>
-        <header data-testid="">
+        <nav>
           <div>
             <h1
               data-testid="customer_products__element-navbar-link-products"
@@ -37,14 +38,14 @@ class Header extends React.Component {
               Sair
             </button>
           </div>
-        </header>
+        </nav>
       </div>
     );
   }
 }
 
-const mapStateToProps = (userLogin) => ({
-  state: userLogin.name,
+const mapStateToProps = ({ userReducer }) => ({
+  state: userReducer.name,
 });
 
 Header.propTypes = {
