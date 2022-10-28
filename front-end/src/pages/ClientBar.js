@@ -8,16 +8,15 @@ class Client extends Component {
     super();
 
     this.state = {
-      products: [], 
+      products: [],
     };
   }
 
   async componentDidMount() {
     const products = await requestData('/products');
-    // console.log(products);
     this.setState({
-      products: [...products]
-    })
+      products: [...products],
+    });
   }
 
   render() {
@@ -27,36 +26,37 @@ class Client extends Component {
         <NavBar />
         <div>
           <ul>
-            { products.map((products, index) => {
-              index !== 0 && (
-                <section>
-                  <li
-                  data-testid={`customer_products__element-card-price-${products.id}`}
-                  key={ index }>
-                    <> { products.url_image } </>
-                    <> { products.name } </>
-                    <> { products.price } </>
-                    <button
-                    data-testid="button_add"
-                    onChange={ this.handleChange }
-                    > Adicionar ao Carrinho 
-                    </button>
-                    <input 
-                      data-testid="button_remove"
-                      placeholder="0"
-                      type="text"
-                      name="text"
-                      onChange={ this.handleChange }
-                    />
-                    <button
-                    data-testid=""
-                    onChange={ this.handleChange }
-                    > Remover do Carrinho 
-                    </button>
-                  </li>
-                </section>
-                )
-            }) }
+            { products.map((product, index) => (
+              <li
+                data-testid={ `customer_products__element-card-price-${product.id}` }
+                key={ index }
+              >
+                <img src={ product.url_image } alt={ product.name } width="50em" />
+                <p>{ product.name }</p>
+                <p>{ product.price }</p>
+                <button
+                  data-testid="button_add"
+                  type="button"
+                  onChange={ this.handleChange }
+                >
+                  Adicionar ao Carrinho
+                </button>
+                <input
+                  data-testid="button_remove"
+                  placeholder="0"
+                  type="text"
+                  name="text"
+                  onChange={ this.handleChange }
+                />
+                <button
+                  data-testid=""
+                  type="button"
+                  onChange={ this.handleChange }
+                >
+                  Remover do Carrinho
+                </button>
+              </li>
+            )) }
           </ul>
         </div>
       </div>
