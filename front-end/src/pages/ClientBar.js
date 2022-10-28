@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
+import { requestData } from '../utils/axios';
 
 class Client extends Component {
   constructor() {
@@ -8,13 +9,17 @@ class Client extends Component {
     this.state = {};
   }
 
+  async componentDidMount() {
+    const products = await requestData('/products');
+    console.log(products);
+  }
+
   render() {
     return (
       <div>
         <Header />
 
         <div>
-          <h2 data-testid=""> Produtos </h2>
           <ul>
             {/* { products.map(() => {
               <li>
@@ -28,4 +33,5 @@ class Client extends Component {
   }
 }
 
-export default connect()(Client);
+export default connect(null, null)(Client);
+// export default Client;
