@@ -11,7 +11,13 @@ const JWT_SIGN = (payload) => Jwt.sign(
   JWT_OPTIONS,
 );
 
-const JWT_VERIFY = (authorization) => Jwt.verify(authorization, JWT_SECRET); 
+const JWT_VERIFY = (authorization) => {
+  try {
+    Jwt.verify(authorization, JWT_SECRET);
+  } catch (error) {
+    return error.message;
+  }
+};
 
 module.exports = {
   JWT_SIGN,

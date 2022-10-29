@@ -56,7 +56,7 @@ class ProductCard extends Component {
 }
 
 ProductCard.propTypes = {
-  products: propTypes.shape.isRequired,
+  products: propTypes.arrayOf(propTypes.shape).isRequired,
 };
 
 export default connect(null, null)(ProductCard);

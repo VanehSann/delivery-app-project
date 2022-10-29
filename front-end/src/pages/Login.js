@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import { userLogin } from '../redux/actions/user';
-import { requestLogin } from '../utils/axios';
+import { requestPost, setUserToken } from '../utils/axios';
 import { setIntoLocalStorage } from '../utils/localStorage';
 
 class Login extends Component {
@@ -49,18 +49,15 @@ class Login extends Component {
     const { email, password } = this.state;
 
     try {
-      const { name, role, token } = await requestLogin('/login', { email, password });
+      const { name, role, token } = await requestPost('/login', { email, password });
 
-      dispatchLoginChange(email, role);
+      dispatchLoginChange(name, email, role);
 
       this.setState({
         errorHandling: false,
       });
 
-      setIntoLocalStorage('name', name);
-      setIntoLocalStorage('email', email);
-      setIntoLocalStorage('role', role);
-      setIntoLocalStorage('token', token);
+      setIntoLocalStorage('user', { name, email, role, token });
 
       switch (role) {
       case 'administrator':

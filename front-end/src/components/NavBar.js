@@ -9,6 +9,12 @@ class NavBar extends React.Component {
     this.state = {};
   }
 
+  logoutUser = () => {
+    const { history } = this.props;
+    localStorage.clear();
+    history.push('/');
+  };
+
   render() {
     const { state } = this.props;
 
@@ -34,6 +40,7 @@ class NavBar extends React.Component {
             <button
               data-testid="customer_products__element-navbar-link-logout"
               type="button"
+              onClick={ this.logoutUser }
             >
               Sair
             </button>
@@ -50,6 +57,9 @@ const mapStateToProps = ({ userReducer }) => ({
 
 NavBar.propTypes = {
   state: propTypes.string.isRequired,
+  history: propTypes.shape({
+    push: propTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps)(NavBar);
