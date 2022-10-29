@@ -1,6 +1,6 @@
 const Jwt = require('jsonwebtoken');
-const JWT_SECRET = require("fs")
-  .readFileSync("./jwt.evaluation.key", { encoding: "utf-8" });
+const JWT_SECRET = require('fs')
+  .readFileSync('./jwt.evaluation.key', { encoding: 'utf-8' });
 
 const JWT_OPTIONS = { algorithm: 'HS256', expiresIn: '1d' };
 
