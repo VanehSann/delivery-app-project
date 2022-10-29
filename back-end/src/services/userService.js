@@ -13,6 +13,11 @@ const userService = {
 
     return userData;
   },
+  loginValidate: async (id) => {
+    const result = await user.findOne({ where: { id }, raw: true });
+
+    return result;
+  },
 };
 
 module.exports = userService;

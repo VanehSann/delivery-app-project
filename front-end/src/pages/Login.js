@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import { userLogin } from '../redux/actions/user';
-import { requestPost, setUserToken } from '../utils/axios';
+import { requestPost } from '../utils/axios';
 import { setIntoLocalStorage } from '../utils/localStorage';
 
 class Login extends Component {

@@ -39,7 +39,6 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: password
       HOSTNAME: db
-      JWT_SECRET: secretJWT
     networks:
       - vitual_wan_Front-to-Back
       - vitual_lan_Back-to-DB

@@ -27,7 +27,7 @@ class ProductCard extends Component {
             <p
               data-testid={ `customer_products__element-card-price-${product.id}` }
             >
-              { product.price }
+              { product.price.replace('.', ',') }
             </p>
             <button
               type="button"
@@ -39,6 +39,8 @@ class ProductCard extends Component {
             <input
               type="number"
               data-testid={ `customer_products__input-card-quantity-${product.id}` }
+              defaultValue={ 0 }
+              min={ 0 }
               onChange={ this.handleChange }
             />
             <button
