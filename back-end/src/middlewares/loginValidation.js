@@ -14,16 +14,15 @@ const validate = {
     next();
   },
  register: async (req, res, next) => {
-    const { name, email, password } = req.body;
-    const decodedPassword = md5(password);
+    const { name, email } = req.body;
+
+    // 10 - name e email existem no db + refatorar
     const emailExits = await user.findOne({ where: { email }, raw: true });
     const nameExits = await user.findOne({ where: { name }, raw: true });
-    if (emailExits
-    && nameExits) {
-      return res.status(404).json({ "message": "email or name already exits" });
-    }
-    if (result) return res.status(404).json({ "message": "this email already exits" });
   
+    if (emailExits && nameExits) {
+      return res.status(StatusCodes.CONFLICT).json(notFoundUser); // mudar erro - refatorar
+    }
     next();
   },
 };

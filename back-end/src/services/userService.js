@@ -12,10 +12,11 @@ const userService = {
     return userData;
   },
  register: async (name, email, password) => {
+   // 9 - pode cadastrar com dados validos
     const decodedPassword = md5(password);
-    const result = await user.create({ name, email, password: decodedPassword, role: '', });
+    const created = await user.create({ name, email, password: decodedPassword, role: '' });
 
-    if (!result) return userData;
+    return created;
   },
 };
 
