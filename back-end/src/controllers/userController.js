@@ -10,7 +10,7 @@ const userController = {
   register: async (req, res) => {
     const { name, email, password } = req.body;
     const result = await userService.register(name, email, password);
-    return res.status(StatusCodes.OK).json(result);
+    return res.status(StatusCodes.CREATED).json(result);
   },
 };
 

@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const md5 = require('md5');
 const { user } = require('../database/models');
-const notFoundUser = require('../utils');
+const { notFoundUser, alreadyInUse } = require('../utils');
 
 const validate = {
   login: async (req, res, next) => {
@@ -21,8 +21,9 @@ const validate = {
     const nameExits = await user.findOne({ where: { name }, raw: true });
   
     if (emailExits && nameExits) {
-      return res.status(StatusCodes.CONFLICT).json(notFoundUser); // mudar erro - refatorar
+      return res.status(StatusCodes.CONFLICT).json(alreadyInUse);
     }
+    
     next();
   },
 };
