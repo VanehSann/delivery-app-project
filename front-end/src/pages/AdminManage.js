@@ -2,7 +2,7 @@ import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userRegister } from '../redux/actions/user';
-import { requestAdminManage, requestRegister } from '../utils/axios';
+import { requestRegister } from '../utils/axios';
 
 class AdminManage extends Component {
   constructor() {
@@ -15,21 +15,21 @@ class AdminManage extends Component {
       password: '',
       isDisabled: true,
       errorHandling: false,
-      listOfMembers: [],
+      // listOfMembers: [],
     };
   }
 
-  async componentDidMount() {
-    try {
-      const results = await requestAdminManage('/admin/manage');
+  // async componentDidMount() {
+  //   try {
+  //     const results = await requestAdminManage('/admin/manage');
 
-      this.setState({
-        listOfMembers: [...results],
-      });
-    } catch (error) {
-      // erro de lint por estar vazio
-    }
-  }
+  //     this.setState({
+  //       listOfMembers: [...results],
+  //     });
+  //   } catch (error) {
+  //     // erro de lint por estar vazio
+  //   }
+  // }
 
   handleChange = ({ target }) => {
     const PASSWORD_MAX_LENGTH = 6;
@@ -40,7 +40,7 @@ class AdminManage extends Component {
       [name]: value,
     }, () => {
       const { username, email, password } = this.state;
-
+      console.log(value);
       if (this.validateEmail(email)
        && password.length >= PASSWORD_MAX_LENGTH
        && username.length >= NAME_MIN_LENGTH) {
@@ -98,7 +98,7 @@ class AdminManage extends Component {
       password,
       isDisabled,
       errorHandling,
-      listOfMembers,
+      // listOfMembers,
     } = this.state;
 
     return (
@@ -141,14 +141,15 @@ class AdminManage extends Component {
               />
             </label>
             <select
-              data-testid="admin_manage__button-register"
+              data-testid="admin_manage__select-role"
               id="selectRole"
               name="role"
               onChange={ this.handleChange }
+              value={ role }
             >
-              <option value={ role }>customer</option>
-              <option value={ role }>seller</option>
-              <option value={ role }>administrator</option>
+              <option>customer</option>
+              <option>seller</option>
+              {/* <option>administrator</option> */}
             </select>
             <button
               data-testid="admin_manage__button-register"
@@ -166,7 +167,7 @@ class AdminManage extends Component {
         </fieldset>
 
         {/* iniciei os bonus sem querer  */}
-        <table>
+        {/* <table>
           <tr>
             <th>Item</th>
             <th>Nome</th>
@@ -193,7 +194,7 @@ class AdminManage extends Component {
               </th>
             </tr>
           ))}
-        </table>
+        </table> */}
       </>
     );
   }
