@@ -41,6 +41,15 @@ class Customer extends Component {
       <div>
         <NavBar history={ history } />
         <ProductCard products={ products } />
+
+        <div>
+          <button
+            data-testid="customer_products__element-navbar-link-logout"
+            type="button"
+            onClick={ this.logoutUser }>
+              Ver Carrinho
+            </button>
+        </div>
       </div>
     );
   }
