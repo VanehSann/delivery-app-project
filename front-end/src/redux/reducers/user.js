@@ -35,9 +35,9 @@ export const userReducerRegister = (state = INITIAL_STATE_REGISTER, action) => {
       email: action.payload.email,
       role: action.payload.role,
     };
+
   default:
     return state;
   }
 };
-
 export default { userReducer, userReducerRegister };

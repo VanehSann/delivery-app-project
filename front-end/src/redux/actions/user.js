@@ -7,7 +7,12 @@ export const userLogin = (email, role) => ({
 
 export const userRegister = (payload) => ({
   type: data.SET_USER_ACTION_REGISTER,
-  payload, // { name, email, role }
+  payload,
 });
+
+// export const userAdminManage = (payload) => ({
+//   type: data.SET_USER_ACTION_ADMIN_MANAGER,
+//   payload,
+// });
 
 export default { userLogin, userRegister };

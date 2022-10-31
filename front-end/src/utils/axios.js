@@ -19,4 +19,9 @@ export const requestRegister = async (endpoint, body) => {
   return data;
 };
 
+export const requestAdminManage = async (endpoint) => {
+  const { data } = await API_URL.get(endpoint);
+  return data;
+};
+
 export default API_URL;
