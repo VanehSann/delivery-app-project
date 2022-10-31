@@ -18,7 +18,6 @@ const userService = {
     return created;
   },
   getAll: async () => {
-
      const results = await user.findAll();
  
      return results;
