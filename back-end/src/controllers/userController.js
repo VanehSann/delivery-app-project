@@ -8,8 +8,8 @@ const userController = {
     return res.status(StatusCodes.OK).json(result);
   },
   register: async (req, res) => {
-    const { name, email, password } = req.body;
-    const result = await userService.register(name, email, password);
+    const { name, email, password, role } = req.body;
+    const result = await userService.register(name, email, password, role);
     return res.status(StatusCodes.CREATED).json(result);
   },
 };

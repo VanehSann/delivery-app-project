@@ -1,5 +1,8 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { userRegister } from '../redux/actions/user';
+import { requestRegister } from '../utils/axios';
 
 class Register extends Component {
   constructor() {
@@ -45,84 +48,105 @@ class Register extends Component {
     return emailRegex.test(email);
   };
 
-  redirectToProducts = () => {
-    const { history } = this.props;
-    history.push('/customer/products');
-    console.log('cheguei aqui');
+  handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const { history, dispatchRegisterChange } = this.props;
+    const { username, email, password } = this.state;
+
+    try {
+      await requestRegister('/register', {
+        name: username,
+        email,
+        password,
+        role: 'customer' });
+
+      dispatchRegisterChange({
+        name: username,
+        email,
+        // password,
+        role: 'customer' }); // aqui tá certo?
+
+      this.setState({
+        errorHandling: false,
+      });
+
+      history.push('/customer/products');
+    } catch (error) {
+      this.setState({
+        errorHandling: true,
+      });
+    }
   };
 
   render() {
     const { email, password, isDisabled, errorHandling, username } = this.state;
 
     return (
-      <>
-        <fieldset>
-          <p>Cadastro</p>
-          <form>
-            <label htmlFor="input-name">
-              <input
-                id="input-name"
-                data-testid="common_register__input-name"
-                placeholder="Insira seu nome"
-                type="text"
-                name="username" // fix : Que nome eu coloco aqui?
-                value={ username }
-                onChange={ this.handleChange }
-              />
-            </label>
-            <label htmlFor="input-email">
-              <input
-                id="input-email"
-                data-testid="common_register__input-email"
-                placeholder="Insira seu e-mail"
-                type="email"
-                name="email"
-                value={ email }
-                onChange={ this.handleChange }
-              />
-            </label>
-            <label htmlFor="input-password">
-              <input
-                id="input-password"
-                data-testid="common_register__input-password"
-                placeholder="Insira sua senha"
-                type="password"
-                name="password"
-                value={ password }
-                onChange={ this.handleChange }
-              />
-            </label>
-            <button
-              data-testid="common_register__button-register"
-              type="button"
-              disabled={ isDisabled }
-              onClick={ this.redirectToProducts }
-            >
-              Cadastrar
-            </button>
-          </form>
-          { errorHandling && (
-            <span data-testid="common_register__element-invalid_register">
-              DADOS INVÁLIDOS PARA CADASTRO
-            </span>
-          ) }
-        </fieldset>
-        <p>teste</p>
-      </>
+      <fieldset>
+        <p>Cadastro</p>
+        <form onSubmit={ this.handleSubmit }>
+          <label htmlFor="input-name">
+            <input
+              id="input-name"
+              data-testid="common_register__input-name"
+              placeholder="Insira seu nome"
+              type="text"
+              name="username"
+              value={ username }
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="input-email">
+            <input
+              id="input-email"
+              data-testid="common_register__input-email"
+              placeholder="Insira seu e-mail"
+              type="email"
+              name="email"
+              value={ email }
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="input-password">
+            <input
+              id="input-password"
+              data-testid="common_register__input-password"
+              placeholder="Insira sua senha"
+              type="password"
+              name="password"
+              value={ password }
+              onChange={ this.handleChange }
+            />
+          </label>
+          <button
+            data-testid="common_register__button-register"
+            type="submit"
+            disabled={ isDisabled }
+          >
+            Cadastrar
+          </button>
+        </form>
+        { errorHandling && (
+          <span data-testid="common_register__element-invalid_register">
+            DADOS INVÁLIDOS PARA CADASTRO
+          </span>
+        ) }
+      </fieldset>
     );
   }
 }
 
-// const mapDispatchToProps = (dispatch) => ({
-//   dispatchRegisterChange: (email, role) => dispatch(userLogin(email, role)),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  dispatchRegisterChange: (body) => dispatch(userRegister(body)),
+});
 
 Register.propTypes = {
   history: propTypes.shape({
     push: propTypes.func.isRequired,
   }).isRequired,
-  //  dispatchRegisterChange: propTypes.func.isRequired,
+  dispatchRegisterChange: propTypes.func.isRequired,
 };
 
-//  export default connect(null, mapDispatchToProps)(Register);
-export default Register;
+export default connect(null, mapDispatchToProps)(Register);
+// export default Register;

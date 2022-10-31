@@ -5,4 +5,9 @@ export const userLogin = (email, role) => ({
   payload: { email, role },
 });
 
-export default userLogin;
+export const userRegister = (payload) => ({
+  type: SET_USER_ACTION_REGISTER,
+  payload, // { name, email, role }
+});
+
+export default { userLogin, userRegister };
