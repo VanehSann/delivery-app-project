@@ -98,7 +98,7 @@ class AdminManage extends Component {
       password,
       isDisabled,
       errorHandling,
-      // listOfMembers,
+      listOfMembers,
     } = this.state;
 
     return (

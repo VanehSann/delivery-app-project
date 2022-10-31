@@ -1,8 +1,8 @@
 import data from '../utils';
 
-export const userLogin = (email, role) => ({
+export const userLogin = (name, email, role) => ({
   type: data.SET_USER_ACTION,
-  payload: { email, role },
+  payload: { name, email, role },
 });
 
 export const userRegister = (payload) => ({

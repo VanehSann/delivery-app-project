@@ -3,6 +3,7 @@ import data from '../utils/index';
 const { SET_USER_ACTION, SET_USER_ACTION_REGISTER } = data;
 
 const INITIAL_STATE = {
+  name: '',
   email: '',
   role: '',
 };
@@ -18,6 +19,7 @@ export const userReducer = (state = INITIAL_STATE, action) => {
   case SET_USER_ACTION:
     return {
       ...state,
+      name: action.payload.name,
       email: action.payload.email,
       role: action.payload.role,
     };
@@ -40,4 +42,5 @@ export const userReducerRegister = (state = INITIAL_STATE_REGISTER, action) => {
     return state;
   }
 };
+
 export default { userReducer, userReducerRegister };

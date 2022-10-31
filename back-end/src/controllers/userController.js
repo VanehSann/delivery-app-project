@@ -1,5 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const userService = require('../services/userService');
+const { JWT_VERIFY } = require('../utils/jwt');
 
 const userController = {
   login: async (req, res) => {
@@ -15,6 +16,14 @@ const userController = {
   getAll: async (req, res) => {
     const result = await userService.getAll();
     return res.status(StatusCodes.OK).json(result);
+  },
+  loginValidate: async (req, res) => {
+    const { token } = req.body;
+    const data = JWT_VERIFY(token);
+    
+    const { email } = await userService.loginValidate(data.id);
+
+    return res.status(StatusCodes.OK).json({ email });
   },
 };
 
