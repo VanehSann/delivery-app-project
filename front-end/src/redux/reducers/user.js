@@ -1,4 +1,6 @@
-import SET_USER_ACTION from '../utils';
+import data from '../utils/index';
+
+const { SET_USER_ACTION, SET_USER_ACTION_REGISTER } = data;
 
 const INITIAL_STATE = {
   email: '',

@@ -1,3 +1,6 @@
-const SET_USER_ACTION = 'SET_USER_ACTION';
+const data = {
+  SET_USER_ACTION: 'SET_USER_ACTION',
+  SET_USER_ACTION_REGISTER: 'SET_USER_ACTION_REGISTER',
 
-export default SET_USER_ACTION;
+};
+export default data;
