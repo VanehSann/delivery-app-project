@@ -34,13 +34,13 @@ class AdminManage extends Component {
   handleChange = ({ target }) => {
     const PASSWORD_MAX_LENGTH = 6;
     const NAME_MIN_LENGTH = 12;
-
     const { name, value } = target;
 
     this.setState({
       [name]: value,
     }, () => {
       const { username, email, password } = this.state;
+
       if (this.validateEmail(email)
        && password.length >= PASSWORD_MAX_LENGTH
        && username.length >= NAME_MIN_LENGTH) {
@@ -143,7 +143,7 @@ class AdminManage extends Component {
             <select
               data-testid="admin_manage__button-register"
               id="selectRole"
-              name="roleSelect"
+              name="role"
               onChange={ this.handleChange }
             >
               <option value={ role }>customer</option>
@@ -165,7 +165,7 @@ class AdminManage extends Component {
           ) }
         </fieldset>
 
-        {/* retorno da api com todos os usuarios - remover esse comentário  */}
+        {/* iniciei os bonus sem querer  */}
         <table>
           <tr>
             <th>Item</th>
