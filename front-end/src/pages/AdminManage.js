@@ -15,21 +15,21 @@ class AdminManage extends Component {
       password: '',
       isDisabled: true,
       errorHandling: false,
-      // listOfMembers: [],
+      listOfMembers: [],
     };
   }
 
-  // async componentDidMount() {
-  //   try {
-  //     const results = await requestAdminManage('/admin/manage');
+  async componentDidMount() {
+    try {
+      const results = await requestAdminManage('/admin/manage');
 
-  //     this.setState({
-  //       listOfMembers: [...results],
-  //     });
-  //   } catch (error) {
-  //     // erro de lint por estar vazio
-  //   }
-  // }
+      this.setState({
+        listOfMembers: [...results],
+      });
+    } catch (error) {
+      // erro de lint por estar vazio
+    }
+  }
 
   handleChange = ({ target }) => {
     const PASSWORD_MAX_LENGTH = 6;
@@ -167,7 +167,7 @@ class AdminManage extends Component {
         </fieldset>
 
         {/* iniciei os bonus sem querer  */}
-        {/* <table>
+        <table>
           <tr>
             <th>Item</th>
             <th>Nome</th>
@@ -194,7 +194,7 @@ class AdminManage extends Component {
               </th>
             </tr>
           ))}
-        </table> */}
+        </table>
       </>
     );
   }
