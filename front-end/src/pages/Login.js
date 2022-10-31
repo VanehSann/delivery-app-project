@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import { userLogin } from '../redux/actions/user';
-import { requestLogin } from '../utils/axios';
+import { requestPost } from '../utils/axios';
+import { setIntoLocalStorage } from '../utils/localStorage';
 
 class Login extends Component {
   constructor() {
@@ -48,11 +49,15 @@ class Login extends Component {
     const { email, password } = this.state;
 
     try {
-      const { role } = await requestLogin('/login', { email, password });
-      dispatchLoginChange(email, role);
+      const { name, role, token } = await requestPost('/login', { email, password });
+
+      dispatchLoginChange(name, email, role);
+
       this.setState({
         errorHandling: false,
       });
+
+      setIntoLocalStorage('user', { name, email, role, token });
 
       switch (role) {
       case 'administrator':
@@ -134,7 +139,7 @@ class Login extends Component {
 // const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchLoginChange: (email, role) => dispatch(userLogin(email, role)),
+  dispatchLoginChange: (name, email, role) => dispatch(userLogin(name, email, role)),
 });
 
 Login.propTypes = {

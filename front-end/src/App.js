@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
+import Customer from './pages/Customer';
 import './App.css';
 
 class App extends Component {
@@ -11,6 +12,7 @@ class App extends Component {
           <Redirect to="/login" />
         </Route>
         <Route exact path="/login" component={ Login } />
+        <Route exact path="/customer/products" component={ Customer } />
       </Switch>
     );
   }
