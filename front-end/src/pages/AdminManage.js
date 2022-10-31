@@ -11,7 +11,7 @@ class AdminManage extends Component {
     this.state = {
       username: '',
       email: '',
-      role: 'Costumer',
+      role: 'customer',
       password: '',
       isDisabled: true,
       errorHandling: false,
@@ -146,9 +146,9 @@ class AdminManage extends Component {
               name="roleSelect"
               onChange={ this.handleChange }
             >
-              <option value={ role }>Costumer</option>
-              <option value={ role }>Seller</option>
-              <option value={ role }>Admin</option>
+              <option value={ role }>customer</option>
+              <option value={ role }>seller</option>
+              <option value={ role }>administrator</option>
             </select>
             <button
               data-testid="admin_manage__button-register"
