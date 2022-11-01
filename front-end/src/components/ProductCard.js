@@ -7,34 +7,71 @@ class ProductCard extends Component {
     super();
 
     this.state = {
-      value: '',
+      atualiza: false,
+      contador: 0,
     };
   }
 
-  handleChange = ({ target }) => {
-    const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
-  }
+  // componentDidMount() {
+  //   const { addProduct } = this.props;
+  //   this.setState({ contador: addProduct.contador });
+  // }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const { setAddProduct, addProduct } = this.props;
-    const sizeProducts = addProduct[addProduct.length - 1];
-    const id = !sizeProducts ? 0 : sizeProducts.id + 1;
-    setAddProduct(this.state, id);
-      this.setState({
-      value: '', description: '',
+  // handleChange = ({ target }) => {
+  //   const { name, value } = target;
+  //   this.setState({
+  //     [name]: value,
+  //   });
+  // };
+
+  increase = ({ target }) => {
+    const { products } = this.props;
+    console.log(products, 'products increase');
+    // const { addProduct } = this.props;
+    // addProduct.contador += 1;
+    // this.setState({ contador: addProduct.contador });
+    const { atualiza } = this.state;
+    console.log(atualiza);
+    this.setState({ atualiza: true }, () => {
+      // const storage = products;
+      // JSON.parse(localStorage.getItem('products'));
+      // console.log(storage, 'log funcao increase');
+      const addItens = products.find((item) => item.id === target.name);
+      addItens.qtd += 1;
+      localStorage.setItem('products', JSON.stringify(storage));
+      this.setState({ atualiza: false });
     });
-  } 
+  };
+
+  // decrease = () => {
+  //   const { addProduct } = this.props;
+  //   if (addProduct.contador > 0) {
+  //     addProduct.contador -= 1;
+  //     this.setState({ contador: addProduct.contador });
+  //   }
+  // };
+
+  // handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const { setAddProduct, addProduct } = this.props;
+  //   const sizeProducts = addProduct[addProduct.length - 1];
+  //   const id = !sizeProducts ? 0 : sizeProducts.id + 1;
+  //   setAddProduct(this.state, id);
+  //   this.setState({
+  //     value: '',
+  //   });
+  // };
 
   render() {
-    const { products, value } = this.props;
+    const { contador } = this.state;
+    const { products } = this.props;
+    // const products = JSON.parse(localStorage.getItem('products'));
+    console.log(products, 'log funcao render');
 
     return (
       <div>
-        <form onSubmit={ this.handleSubmit }>
+        <form>
+          {/* onSubmit={ this.handleSubmit } */}
           { products.map((product) => (
             <div
               data-testid={ `customer_products__element-card-price-${product.id}` }
@@ -54,47 +91,49 @@ class ProductCard extends Component {
               <p
                 data-testid={ `customer_products__element-card-price-${product.id}` }
               >
-                { product.price.replace('.', ',') }
+                { `Valor: ${product.price.replace('.', ',')}`}
               </p>
               <button
                 type="button"
                 name="down"
-                value={ value }
+                value={ contador }
                 data-testid={ `customer_products__button-card-rm-item-${product.id}` }
-                onChange={ this.handleChange }
+                onClick={ this.decrease }
               >
                 -
               </button>
               <input
                 type="number"
                 data-testid={ `customer_products__input-card-quantity-${product.id}` }
-                defaultValue={ 0 }
+                value={ contador }
                 min={ 0 }
-                onChange={ this.handleChange }
+                // onChange={ this.handleChange }
               />
               <button
                 data-testid={ `customer_products__button-card-add-item-${product.id}` }
                 type="button"
                 name="up"
-                value={ value }
-                onChange={ this.handleChange }
+                value={ contador }
+                onClick={ this.increase }
               >
                 +
               </button>
             </div>
-        )) }
+          )) }
         </form>
       </div>
     );
   }
 }
 
-const mapStateToProps = ( globalState ) => ({
-  qtyProduct: globalState.sizeButtons.addProduct,
+const mapStateToProps = (globalState) => ({
+  addProduct: globalState.sizeButtons.addProduct,
 });
 
 ProductCard.propTypes = {
   products: propTypes.arrayOf(propTypes.shape).isRequired,
+// addProduct: propTypes.shape.isRequired,
+// setAddProduct: propTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, null)(ProductCard);

@@ -1,6 +1,6 @@
-import SET_PRODUCT_ACTION from '../utils';
+import { SET_PRODUCT_ACTION } from '../utils';
 
-export const buttonSize = (state) => ({
+const buttonSize = (state) => ({
   type: SET_PRODUCT_ACTION,
   payload: state,
 });
