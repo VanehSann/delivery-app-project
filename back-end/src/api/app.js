@@ -6,9 +6,8 @@ const adminManageRoute = require('../routes/adminManageRoute');
 const productRoute = require('../routes/productRoute');
 
 const app = express();
-app.use(express.json());
 app.use(cors());
-
+app.use(express.json());
 app.get('/coffee', (_req, res) => res.status(418).end());
 app.use('/images', express.static('public'));
 app.use('/login', loginRoute);

@@ -13,7 +13,7 @@ const userController = {
     const result = await userService.register(name, email, password, role);
     return res.status(StatusCodes.CREATED).json(result);
   },
-  getAll: async (req, res) => {
+  getAll: async (_req, res) => {
     const result = await userService.getAll();
     return res.status(StatusCodes.OK).json(result);
   },
@@ -25,6 +25,7 @@ const userController = {
 
     return res.status(StatusCodes.OK).json({ email });
   },
+  
 };
 
 module.exports = userController;

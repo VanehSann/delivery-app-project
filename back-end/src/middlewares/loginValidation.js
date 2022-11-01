@@ -19,11 +19,9 @@ const validate = {
     // 10 - name e email existem no db + refatorar
     const emailExits = await user.findOne({ where: { email }, raw: true });
     const nameExits = await user.findOne({ where: { name }, raw: true });
-  
     if (emailExits && nameExits) {
       return res.status(StatusCodes.CONFLICT).json(alreadyInUse);
     }
-    
     next();
   },
 };

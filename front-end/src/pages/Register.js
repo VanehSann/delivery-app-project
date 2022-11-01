@@ -2,7 +2,7 @@ import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userRegister } from '../redux/actions/user';
-import { requestRegister } from '../utils/axios';
+import { requestPost } from '../utils/axios';
 
 class Register extends Component {
   constructor() {
@@ -55,7 +55,7 @@ class Register extends Component {
     const { username, email, password } = this.state;
 
     try {
-      await requestRegister('/register', {
+      await requestPost('/register', {
         name: username,
         email,
         password,
@@ -149,4 +149,3 @@ Register.propTypes = {
 };
 
 export default connect(null, mapDispatchToProps)(Register);
-// export default Register;

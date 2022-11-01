@@ -2,7 +2,8 @@ import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userRegister } from '../redux/actions/user';
-import { requestRegister } from '../utils/axios';
+import { requestData, requestPost } from '../utils/axios';
+
 
 class AdminManage extends Component {
   constructor() {
@@ -21,7 +22,7 @@ class AdminManage extends Component {
 
   async componentDidMount() {
     try {
-      const results = await requestAdminManage('/admin/manage');
+      const results = await requestData('/admin/manage');
 
       this.setState({
         listOfMembers: [...results],
@@ -69,7 +70,7 @@ class AdminManage extends Component {
     const { username, email, password, role } = this.state;
 
     try {
-      await requestRegister('/admin/manage', {
+      await requestPost('/admin/manage', {
         name: username,
         email,
         password,
