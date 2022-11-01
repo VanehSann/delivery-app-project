@@ -14,35 +14,27 @@ const userService = {
 
     return userData;
   },
-  register: async (name, email, password, role) => {
-      const decodedPassword = md5(password);
-     
-      const created = await user.create({ name, email, password: decodedPassword, role });
- 
-      return created;
+  register: async (userName, mail, password, userRole) => {
+    const decodedPassword = md5(password);    
+    const created = await user
+      .create({ name: userName, email: mail, password: decodedPassword, role: userRole });
+
+    const token = JWT_SIGN(created);
+    const { name, email, role } = created;
+    const userData = { name, email, role, token };
+
+    return userData;
   },
   getAll: async () => {
-     const results = await user.findAll();
- 
-     return results;
-   },
+    const results = await user.findAll();
+
+    return results;
+  },
   loginValidate: async (id) => {
     const result = await user.findOne({ where: { id }, raw: true });
 
     return result;
   },
-  register: async (name, email, password, role) => {
-    const decodedPassword = md5(password);
-    
-    const created = await user.create({ name, email, password: decodedPassword, role });
-    
-    return created;
-  },
-    getAll: async () => {
-    const results = await user.findAll();
-    
-    return results;
-  }, 
 };
 
 module.exports = userService;

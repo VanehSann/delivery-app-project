@@ -2,15 +2,16 @@ import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userRegister } from '../redux/actions/user';
-import { requestPost } from '../utils/axios';
+import { requestPost, setToken } from '../utils/axios';
+import { setIntoLocalStorage } from '../utils/localStorage';
 
 class Register extends Component {
   constructor() {
     super();
 
     this.state = {
-      username: '',
-      email: '',
+      userName: '',
+      userEmail: '',
       password: '',
       isDisabled: true,
       errorHandling: false,
@@ -26,10 +27,10 @@ class Register extends Component {
     this.setState({
       [name]: value,
     }, () => {
-      const { username, email, password } = this.state;
-      if (this.validateEmail(email)
+      const { userName, userEmail, password } = this.state;
+      if (this.validateEmail(userEmail)
        && password.length >= PASSWORD_MAX_LENGTH
-       && username.length >= NAME_MIN_LENGTH) {
+       && userName.length >= NAME_MIN_LENGTH) {
         this.setState({
           isDisabled: false,
           errorHandling: false,
@@ -52,20 +53,22 @@ class Register extends Component {
     event.preventDefault();
 
     const { history, dispatchRegisterChange } = this.props;
-    const { username, email, password } = this.state;
+    const { userName, userEmail, password } = this.state;
 
     try {
-      await requestPost('/register', {
-        name: username,
-        email,
+      const { name, email, role, token } = await requestPost('/register', {
+        name: userName,
+        email: userEmail,
         password,
         role: 'customer' });
 
+      setIntoLocalStorage('user', { name, email, role, token });
+      setToken(token);
+
       dispatchRegisterChange({
-        name: username,
-        email,
-        // password,
-        role: 'customer' }); // aqui tá certo?
+        name: userName,
+        userEmail,
+        role: 'customer' });
 
       this.setState({
         errorHandling: false,
@@ -80,7 +83,7 @@ class Register extends Component {
   };
 
   render() {
-    const { email, password, isDisabled, errorHandling, username } = this.state;
+    const { userEmail, password, isDisabled, errorHandling, userName } = this.state;
 
     return (
       <fieldset>
@@ -92,8 +95,8 @@ class Register extends Component {
               data-testid="common_register__input-name"
               placeholder="Insira seu nome"
               type="text"
-              name="username"
-              value={ username }
+              name="userName"
+              value={ userName }
               onChange={ this.handleChange }
             />
           </label>
@@ -103,8 +106,8 @@ class Register extends Component {
               data-testid="common_register__input-email"
               placeholder="Insira seu e-mail"
               type="email"
-              name="email"
-              value={ email }
+              name="userEmail"
+              value={ userEmail }
               onChange={ this.handleChange }
             />
           </label>

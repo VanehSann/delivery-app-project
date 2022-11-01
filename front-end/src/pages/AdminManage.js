@@ -22,14 +22,13 @@ class AdminManage extends Component {
 
   async componentDidMount() {
     const { history } = this.props;
-    console.log('teste');
+
     try {
       const results = await requestData('/admin/manage');
-      console.log('teste2');
+
       const { token } = getFromLocalStorage('user') || {};
 
       const userData = await requestPost('/login/validate', { token });
-      console.log(userData);
 
       this.setState({
         listOfMembers: [...results],
@@ -51,7 +50,7 @@ class AdminManage extends Component {
       [name]: value,
     }, () => {
       const { username, email, password } = this.state;
-      console.log(value);
+
       if (this.validateEmail(email)
        && password.length >= PASSWORD_MAX_LENGTH
        && username.length >= NAME_MIN_LENGTH) {
