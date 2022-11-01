@@ -31,18 +31,6 @@ const userService = {
 
     return result;
   },
-  register: async (name, email, password, role) => {
-    const decodedPassword = md5(password);
-    
-    const created = await user.create({ name, email, password: decodedPassword, role });
-    
-    return created;
-  },
-    getAll: async () => {
-    const results = await user.findAll();
-    
-    return results;
-  }, 
 };
 
 module.exports = userService;
