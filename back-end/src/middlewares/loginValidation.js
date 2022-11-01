@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const md5 = require('md5');
 const { user } = require('../database/models');
-const notFoundUser = require('../utils');
+const { notFoundUser, alreadyInUse } = require('../utils');
 
 const validate = {
   login: async (req, res, next) => {
@@ -13,17 +13,15 @@ const validate = {
 
     next();
   },
-  register: async (req, res, next) => {
+ register: async (req, res, next) => {
     const { name, email } = req.body;
 
     // 10 - name e email existem no db + refatorar
     const emailExits = await user.findOne({ where: { email }, raw: true });
     const nameExits = await user.findOne({ where: { name }, raw: true });
-
     if (emailExits && nameExits) {
       return res.status(StatusCodes.CONFLICT).json(alreadyInUse);
     }
-
     next();
   },
 };

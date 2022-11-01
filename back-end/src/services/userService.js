@@ -1,5 +1,6 @@
 const md5 = require('md5');
 const { user } = require('../database/models');
+
 const { JWT_SIGN } = require('../utils/jwt');
 
 const userService = {
@@ -13,6 +14,18 @@ const userService = {
 
     return userData;
   },
+  register: async (name, email, password, role) => {
+      const decodedPassword = md5(password);
+     
+      const created = await user.create({ name, email, password: decodedPassword, role });
+ 
+      return created;
+  },
+  getAll: async () => {
+     const results = await user.findAll();
+ 
+     return results;
+   },
   loginValidate: async (id) => {
     const result = await user.findOne({ where: { id }, raw: true });
 

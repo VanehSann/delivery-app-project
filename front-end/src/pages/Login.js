@@ -1,6 +1,6 @@
+import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import propTypes from 'prop-types';
 import { userLogin } from '../redux/actions/user';
 import { requestPost } from '../utils/axios';
 import { setIntoLocalStorage } from '../utils/localStorage';

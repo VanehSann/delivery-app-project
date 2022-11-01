@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { userRegister } from '../redux/actions/user';
 import { requestData, requestPost } from '../utils/axios';
 
+
 class AdminManage extends Component {
   constructor() {
     super();
