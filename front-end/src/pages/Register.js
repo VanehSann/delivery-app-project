@@ -1,16 +1,17 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userLogin } from '../redux/actions/user';
+import { userRegister } from '../redux/actions/user';
 import { requestPost, setToken } from '../utils/axios';
 import { setIntoLocalStorage } from '../utils/localStorage';
 
-class Login extends Component {
+class Register extends Component {
   constructor() {
     super();
 
     this.state = {
-      email: '',
+      userName: '',
+      userEmail: '',
       password: '',
       isDisabled: true,
       errorHandling: false,
@@ -19,19 +20,25 @@ class Login extends Component {
 
   handleChange = ({ target }) => {
     const PASSWORD_MAX_LENGTH = 6;
+    const NAME_MIN_LENGTH = 12;
+
     const { name, value } = target;
 
     this.setState({
       [name]: value,
     }, () => {
-      const { email, password } = this.state;
-      if (this.validateEmail(email) && password.length >= PASSWORD_MAX_LENGTH) {
+      const { userName, userEmail, password } = this.state;
+      if (this.validateEmail(userEmail)
+       && password.length >= PASSWORD_MAX_LENGTH
+       && userName.length >= NAME_MIN_LENGTH) {
         this.setState({
           isDisabled: false,
+          errorHandling: false,
         });
       } else {
         this.setState({
           isDisabled: true,
+          errorHandling: true,
         });
       }
     });
@@ -45,31 +52,29 @@ class Login extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { history, dispatchLoginChange } = this.props;
-    const { email, password } = this.state;
+    const { history, dispatchRegisterChange } = this.props;
+    const { userName, userEmail, password } = this.state;
 
     try {
-      const { name, role, token } = await requestPost('/login', { email, password });
+      const { name, email, role, token } = await requestPost('/register', {
+        name: userName,
+        email: userEmail,
+        password,
+        role: 'customer' });
 
-      dispatchLoginChange(name, email, role);
+      setIntoLocalStorage('user', { name, email, role, token });
+      setToken(token);
+
+      dispatchRegisterChange({
+        name: userName,
+        userEmail,
+        role: 'customer' });
 
       this.setState({
         errorHandling: false,
       });
 
-      setIntoLocalStorage('user', { name, email, role, token });
-      setToken(token);
-
-      switch (role) {
-      case 'administrator':
-        history.push('/admin/manage');
-        break;
-      case 'seller':
-        history.push('/seller/orders');
-        break;
-      default:
-        history.push('/customer/products');
-      }
+      history.push('/customer/products');
     } catch (error) {
       this.setState({
         errorHandling: true,
@@ -77,33 +82,39 @@ class Login extends Component {
     }
   };
 
-  redirectToRegister = () => {
-    const { history } = this.props;
-    history.push('/register');
-  };
-
   render() {
-    const { email, password, isDisabled, errorHandling } = this.state;
+    const { userEmail, password, isDisabled, errorHandling, userName } = this.state;
 
     return (
       <fieldset>
-        <p>Login</p>
+        <p>Cadastro</p>
         <form onSubmit={ this.handleSubmit }>
+          <label htmlFor="input-name">
+            <input
+              id="input-name"
+              data-testid="common_register__input-name"
+              placeholder="Insira seu nome"
+              type="text"
+              name="userName"
+              value={ userName }
+              onChange={ this.handleChange }
+            />
+          </label>
           <label htmlFor="input-email">
             <input
               id="input-email"
-              data-testid="common_login__input-email"
+              data-testid="common_register__input-email"
               placeholder="Insira seu e-mail"
               type="email"
-              name="email"
-              value={ email }
+              name="userEmail"
+              value={ userEmail }
               onChange={ this.handleChange }
             />
           </label>
           <label htmlFor="input-password">
             <input
               id="input-password"
-              data-testid="common_login__input-password"
+              data-testid="common_register__input-password"
               placeholder="Insira sua senha"
               type="password"
               name="password"
@@ -112,42 +123,32 @@ class Login extends Component {
             />
           </label>
           <button
-            data-testid="common_login__button-login"
+            data-testid="common_register__button-register"
             type="submit"
             disabled={ isDisabled }
           >
-            Entrar
+            Cadastrar
           </button>
         </form>
-        <button
-          data-testid="common_login__button-register"
-          type="button"
-          onClick={ this.redirectToRegister }
-        >
-          Registrar
-        </button>
         { errorHandling && (
-          <span data-testid="common_login__element-invalid-email">
-            DADOS INVÁLIDOS PARA LOGIN
+          <span data-testid="common_register__element-invalid_register">
+            DADOS INVÁLIDOS PARA CADASTRO
           </span>
         ) }
-
       </fieldset>
     );
   }
 }
 
-// const mapStateToProps = (state) => ({});
-
 const mapDispatchToProps = (dispatch) => ({
-  dispatchLoginChange: (name, email, role) => dispatch(userLogin(name, email, role)),
+  dispatchRegisterChange: (body) => dispatch(userRegister(body)),
 });
 
-Login.propTypes = {
-  dispatchLoginChange: propTypes.func.isRequired,
+Register.propTypes = {
   history: propTypes.shape({
     push: propTypes.func.isRequired,
   }).isRequired,
+  dispatchRegisterChange: propTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Register);

@@ -1,4 +1,6 @@
-import SET_USER_ACTION from '../utils';
+import data from '../utils/index';
+
+const { SET_USER_ACTION, SET_USER_ACTION_REGISTER } = data;
 
 const INITIAL_STATE = {
   name: '',
@@ -6,7 +8,13 @@ const INITIAL_STATE = {
   role: '',
 };
 
-const userReducer = (state = INITIAL_STATE, action) => {
+const INITIAL_STATE_REGISTER = {
+  name: '',
+  email: '',
+  role: '',
+};
+
+export const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case SET_USER_ACTION:
     return {
@@ -20,4 +28,19 @@ const userReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default userReducer;
+export const userReducerRegister = (state = INITIAL_STATE_REGISTER, action) => {
+  switch (action.type) {
+  case SET_USER_ACTION_REGISTER:
+    return {
+      ...state,
+      name: action.payload.name,
+      email: action.payload.email,
+      role: action.payload.role,
+    };
+
+  default:
+    return state;
+  }
+};
+
+export default { userReducer, userReducerRegister };

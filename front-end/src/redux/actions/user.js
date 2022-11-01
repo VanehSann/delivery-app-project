@@ -1,8 +1,18 @@
-import SET_USER_ACTION from '../utils';
+import data from '../utils';
 
 export const userLogin = (name, email, role) => ({
-  type: SET_USER_ACTION,
+  type: data.SET_USER_ACTION,
   payload: { name, email, role },
 });
 
-export default userLogin;
+export const userRegister = (payload) => ({
+  type: data.SET_USER_ACTION_REGISTER,
+  payload,
+});
+
+// export const userAdminManage = (payload) => ({
+//   type: data.SET_USER_ACTION_ADMIN_MANAGER,
+//   payload,
+// });
+
+export default { userLogin, userRegister };
