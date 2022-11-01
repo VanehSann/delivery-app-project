@@ -16,7 +16,7 @@ class ProductCard extends Component {
     this.setState({
       [name]: value,
     });
-  }
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -24,10 +24,10 @@ class ProductCard extends Component {
     const sizeProducts = addProduct[addProduct.length - 1];
     const id = !sizeProducts ? 0 : sizeProducts.id + 1;
     setAddProduct(this.state, id);
-      this.setState({
+    this.setState({
       value: '', description: '',
     });
-  } 
+  };
 
   render() {
     const { products, value } = this.props;
@@ -82,19 +82,22 @@ class ProductCard extends Component {
                 +
               </button>
             </div>
-        )) }
+          )) }
         </form>
       </div>
     );
   }
 }
 
-const mapStateToProps = ( globalState ) => ({
+const mapStateToProps = (globalState) => ({
   qtyProduct: globalState.sizeButtons.addProduct,
 });
 
 ProductCard.propTypes = {
   products: propTypes.arrayOf(propTypes.shape).isRequired,
+  setAddProduct: propTypes.func.isRequired,
+  addProduct: propTypes.func.isRequired,
+  value: propTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, null)(ProductCard);
