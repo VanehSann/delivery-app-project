@@ -2,7 +2,7 @@ import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userLogin } from '../redux/actions/user';
-import { requestPost } from '../utils/axios';
+import { requestPost, setToken } from '../utils/axios';
 import { setIntoLocalStorage } from '../utils/localStorage';
 
 class Login extends Component {
@@ -58,6 +58,7 @@ class Login extends Component {
       });
 
       setIntoLocalStorage('user', { name, email, role, token });
+      setToken(token);
 
       switch (role) {
       case 'administrator':

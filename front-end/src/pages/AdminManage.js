@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userRegister } from '../redux/actions/user';
 import { requestData, requestPost } from '../utils/axios';
-
+import { getFromLocalStorage } from '../utils/localStorage';
 
 class AdminManage extends Component {
   constructor() {
@@ -21,14 +21,24 @@ class AdminManage extends Component {
   }
 
   async componentDidMount() {
+    const { history } = this.props;
+    console.log('teste');
     try {
       const results = await requestData('/admin/manage');
+      console.log('teste2');
+      const { token } = getFromLocalStorage('user') || {};
+
+      const userData = await requestPost('/login/validate', { token });
+      console.log(userData);
 
       this.setState({
         listOfMembers: [...results],
       });
+      if (userData.role !== 'administrator') {
+        history.push('/');
+      }
     } catch (error) {
-      // erro de lint por estar vazio
+      history.push('/');
     }
   }
 

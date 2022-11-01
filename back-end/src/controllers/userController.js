@@ -21,9 +21,9 @@ const userController = {
     const { token } = req.body;
     const data = JWT_VERIFY(token);
     
-    const { email } = await userService.loginValidate(data.id);
+    const { email, role } = await userService.loginValidate(data.id);
 
-    return res.status(StatusCodes.OK).json({ email });
+    return res.status(StatusCodes.OK).json({ email, role });
   },
   
 };

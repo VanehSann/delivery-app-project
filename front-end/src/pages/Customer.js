@@ -46,9 +46,10 @@ class Customer extends Component {
           <button
             data-testid="customer_products__element-navbar-link-logout"
             type="button"
-            onClick={ this.logoutUser }>
-              Ver Carrinho
-            </button>
+            onClick={ this.logoutUser }
+          >
+            Ver Carrinho
+          </button>
         </div>
       </div>
     );
