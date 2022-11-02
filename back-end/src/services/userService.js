@@ -35,6 +35,9 @@ const userService = {
 
     return result;
   },
+  deleteUser: async (id) => {
+    await user.destroy({ where: { id } });
+  }
 };
 
 module.exports = userService;

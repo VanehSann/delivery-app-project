@@ -17,4 +17,9 @@ export const requestPost = async (endpoint, body) => {
   const { data } = await API.post(endpoint, body);
   return data;
 };
+
+export const requestDelete = async (endpoint) => {
+  await API.delete(endpoint);
+};
+
 export default API;

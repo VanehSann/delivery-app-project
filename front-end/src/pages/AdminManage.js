@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { userRegister } from '../redux/actions/user';
-import { requestData, requestPost } from '../utils/axios';
+import { requestData, requestPost, requestDelete } from '../utils/axios';
 import { getFromLocalStorage } from '../utils/localStorage';
 import {
   PASSWORD_MAX_LENGTH,
@@ -92,17 +92,29 @@ class AdminManage extends Component {
     };
 
     try {
-      await requestPost('/admin/manage', requestBody);
+      const { userList } = this.state;
+      const newUser = await requestPost('/admin/manage', requestBody);
 
       dispatchRegisterChange(reduxBody);
 
       this.setState({
+        userList: [...userList, newUser],
         invalidFields: false,
       });
     } catch (error) {
       this.setState({
         invalidFields: true,
       });
+    }
+  };
+
+  deleteUser = async (id) => {
+    console.log('oie');
+    console.log('id', id);
+    try {
+      await requestDelete(`/admin/manage/${id}`);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -174,10 +186,10 @@ class AdminManage extends Component {
             />
           ) }
         </fieldset>
-
         <GenericTable
           headOptions={ headOptions }
           data={ userList }
+          deleteUser={ this.deleteUser }
         />
       </>
     );
