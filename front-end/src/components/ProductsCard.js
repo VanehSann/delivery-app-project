@@ -3,18 +3,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 class ProductCard extends Component {
-  constructor() {
-    super();
+  // constructor() {
+  //   super();
 
-    this.state = {
-      atualiza: false,
-      contador: 0,
-    };
-  }
-
-  // componentDidMount() {
-  //   const { addProduct } = this.props;
-  //   this.setState({ contador: addProduct.contador });
+  //   this.state = {
+  //     contador: 0,
+  //   };
   // }
 
   // handleChange = ({ target }) => {
@@ -22,33 +16,6 @@ class ProductCard extends Component {
   //   this.setState({
   //     [name]: value,
   //   });
-  // };
-
-  increase = ({ target }) => {
-    const { products } = this.props;
-    console.log(products, 'products increase');
-    // const { addProduct } = this.props;
-    // addProduct.contador += 1;
-    // this.setState({ contador: addProduct.contador });
-    const { atualiza } = this.state;
-    console.log(atualiza);
-    this.setState({ atualiza: true }, () => {
-      // const storage = products;
-      // JSON.parse(localStorage.getItem('products'));
-      // console.log(storage, 'log funcao increase');
-      const addItens = products.find((item) => item.id === target.name);
-      addItens.qtd += 1;
-      localStorage.setItem('products', JSON.stringify(storage));
-      this.setState({ atualiza: false });
-    });
-  };
-
-  // decrease = () => {
-  //   const { addProduct } = this.props;
-  //   if (addProduct.contador > 0) {
-  //     addProduct.contador -= 1;
-  //     this.setState({ contador: addProduct.contador });
-  //   }
   // };
 
   // handleSubmit = (event) => {
@@ -63,10 +30,8 @@ class ProductCard extends Component {
   // };
 
   render() {
-    const { contador } = this.state;
-    const { products } = this.props;
+    const { products, increase, decrease } = this.props;
     // const products = JSON.parse(localStorage.getItem('products'));
-    console.log(products, 'log funcao render');
 
     return (
       <div>
@@ -96,25 +61,26 @@ class ProductCard extends Component {
               <button
                 type="button"
                 name="down"
-                value={ contador }
+                // value={ contador }
                 data-testid={ `customer_products__button-card-rm-item-${product.id}` }
-                onClick={ this.decrease }
+                onClick={ () => decrease(product.id) }
               >
                 -
               </button>
               <input
                 type="number"
                 data-testid={ `customer_products__input-card-quantity-${product.id}` }
-                value={ contador }
-                min={ 0 }
+                value={ product.qty }
+                // min={ 0 }
+                // defaultValue={ 0 }
                 // onChange={ this.handleChange }
               />
               <button
                 data-testid={ `customer_products__button-card-add-item-${product.id}` }
                 type="button"
                 name="up"
-                value={ contador }
-                onClick={ this.increase }
+                // value={ contador }
+                onClick={ () => increase(product.id) }
               >
                 +
               </button>
@@ -132,8 +98,9 @@ const mapStateToProps = (globalState) => ({
 
 ProductCard.propTypes = {
   products: propTypes.arrayOf(propTypes.shape).isRequired,
-// addProduct: propTypes.shape.isRequired,
-// setAddProduct: propTypes.func.isRequired,
+  increase: propTypes.func.isRequired,
+  decrease: propTypes.func.isRequired,
+  // setAddProduct: propTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, null)(ProductCard);
