@@ -5,6 +5,6 @@ const validate = require('../middlewares/loginValidation');
 const route = Router();
 
 route.post('/', validate.register, userController.register);
-route.get('/', userController.getAll);
+route.get('/', userController.getAllUsers);
 
 module.exports = route;

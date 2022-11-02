@@ -25,7 +25,7 @@ const userService = {
 
     return userData;
   },
-  getAll: async () => {
+  getAllUsers: async () => {
     const results = await user.findAll();
 
     return results;

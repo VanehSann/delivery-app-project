@@ -7,6 +7,7 @@ import { setIntoLocalStorage } from '../utils/localStorage';
 import { PASSWORD_MAX_LENGTH, validateEmail } from '../utils';
 import GenericInput from '../components/GenericInput';
 import GenericButton from '../components/GenericButton';
+import GenericText from '../components/GenericText';
 
 class Login extends Component {
   constructor() {
@@ -83,7 +84,10 @@ class Login extends Component {
 
     return (
       <fieldset>
-        <p>Login</p>
+        <GenericText
+          tag="p"
+          text="Login"
+        />
         <form onSubmit={ this.handleSubmit }>
           <GenericInput
             id="input-email"
@@ -117,11 +121,12 @@ class Login extends Component {
           onClick={ this.redirectToRegister }
         />
         { invalidFields && (
-          <span data-testid="common_login__element-invalid-email">
-            E-MAIL OU SENHA INCORRETOS. TENTE NOVAMENTE.
-          </span>
+          <GenericText
+            tag="span"
+            datatestId="common_login__element-invalid-email"
+            text="E-mail ou senha incorretos. Tente novamente."
+          />
         ) }
-
       </fieldset>
     );
   }

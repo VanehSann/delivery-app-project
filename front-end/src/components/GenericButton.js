@@ -21,8 +21,12 @@ GenericButton.propTypes = {
   datatestId: propTypes.string.isRequired,
   type: propTypes.string.isRequired,
   disabled: propTypes.bool.isRequired,
-  onClick: propTypes.func.isRequired,
+  onClick: propTypes.func,
   text: propTypes.string.isRequired,
+};
+
+GenericButton.defaultProps = {
+  onClick: null,
 };
 
 export default GenericButton;

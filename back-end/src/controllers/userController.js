@@ -17,8 +17,8 @@ const userController = {
 
     return res.status(StatusCodes.CREATED).json(result);
   },
-  getAll: async (_req, res) => {
-    const result = await userService.getAll();
+  getAllUsers: async (_req, res) => {
+    const result = await userService.getAllUsers();
 
     return res.status(StatusCodes.OK).json(result);
   },
@@ -31,7 +31,6 @@ const userController = {
 
     return res.status(StatusCodes.OK).json({ email, role });
   },
-  
 };
 
 module.exports = userController;
