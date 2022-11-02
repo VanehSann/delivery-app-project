@@ -7,8 +7,14 @@ const validateEmail = (email) => {
   return emailRegex.test(email);
 };
 
+const availableRoles = ['customer', 'seller'];
+
+const headOptions = ['Item', 'Nome', 'E-mail', 'Tipo', 'Excluir'];
+
 export {
   PASSWORD_MAX_LENGTH,
   NAME_MIN_LENGTH,
   validateEmail,
+  availableRoles,
+  headOptions,
 };

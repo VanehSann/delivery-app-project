@@ -20,12 +20,13 @@ class GenericButton extends Component {
 GenericButton.propTypes = {
   datatestId: propTypes.string.isRequired,
   type: propTypes.string.isRequired,
-  disabled: propTypes.bool.isRequired,
+  disabled: propTypes.bool,
   onClick: propTypes.func,
   text: propTypes.string.isRequired,
 };
 
 GenericButton.defaultProps = {
+  disabled: null,
   onClick: null,
 };
 

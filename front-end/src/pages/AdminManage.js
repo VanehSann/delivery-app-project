@@ -4,6 +4,17 @@ import { connect } from 'react-redux';
 import { userRegister } from '../redux/actions/user';
 import { requestData, requestPost } from '../utils/axios';
 import { getFromLocalStorage } from '../utils/localStorage';
+import {
+  PASSWORD_MAX_LENGTH,
+  NAME_MIN_LENGTH,
+  validateEmail,
+  headOptions,
+  availableRoles } from '../utils';
+import GenericText from '../components/GenericText';
+import GenericInput from '../components/GenericInput';
+import GenericButton from '../components/GenericButton';
+import GenericSelect from '../components/GenericSelect';
+import GenericTable from '../components/GenericTable';
 
 class AdminManage extends Component {
   constructor() {
@@ -14,9 +25,9 @@ class AdminManage extends Component {
       email: '',
       role: 'customer',
       password: '',
-      isDisabled: true,
-      errorHandling: false,
-      listOfMembers: [],
+      disabledButtons: true,
+      invalidFields: false,
+      userList: [],
     };
   }
 
@@ -24,78 +35,73 @@ class AdminManage extends Component {
     const { history } = this.props;
 
     try {
-      const results = await requestData('/admin/manage');
-
       const { token } = getFromLocalStorage('user') || {};
 
       const userData = await requestPost('/login/validate', { token });
 
-      this.setState({
-        listOfMembers: [...results],
-      });
       if (userData.role !== 'administrator') {
         history.push('/');
       }
+      const results = await requestData('/admin/manage');
+
+      this.setState({
+        userList: [...results],
+      });
     } catch (error) {
       history.push('/');
     }
   }
 
-  handleChange = ({ target }) => {
-    const PASSWORD_MAX_LENGTH = 6;
-    const NAME_MIN_LENGTH = 12;
-    const { name, value } = target;
-
+  handleChange = ({ target: { name, value } }) => {
     this.setState({
       [name]: value,
     }, () => {
       const { username, email, password } = this.state;
 
-      if (this.validateEmail(email)
-       && password.length >= PASSWORD_MAX_LENGTH
-       && username.length >= NAME_MIN_LENGTH) {
+      if (validateEmail(email)
+        && password.length >= PASSWORD_MAX_LENGTH
+        && username.length >= NAME_MIN_LENGTH) {
         this.setState({
-          isDisabled: false,
-          errorHandling: false,
+          disabledButtons: false,
         });
       } else {
         this.setState({
-          isDisabled: true,
-          errorHandling: true,
+          disabledButtons: true,
         });
       }
     });
   };
 
-  validateEmail = (email) => {
-    const emailRegex = /\S+@\S+\.\S+/;
-    return emailRegex.test(email);
-  };
-
   handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { dispatchRegisterChange } = this.props;
     const { username, email, password, role } = this.state;
+    const { dispatchRegisterChange } = this.props;
+
+    const requestBody = {
+      name: username,
+      email,
+      password,
+      role,
+    };
+
+    const reduxBody = {
+      name: username,
+      email,
+      role,
+    };
 
     try {
-      await requestPost('/admin/manage', {
-        name: username,
-        email,
-        password,
-        role });
+      await requestPost('/admin/manage', requestBody);
 
-      dispatchRegisterChange({
-        name: username,
-        email,
-        role });
+      dispatchRegisterChange(reduxBody);
 
       this.setState({
-        errorHandling: false,
+        invalidFields: false,
       });
     } catch (error) {
       this.setState({
-        errorHandling: true,
+        invalidFields: true,
       });
     }
   };
@@ -106,105 +112,73 @@ class AdminManage extends Component {
       email,
       role,
       password,
-      isDisabled,
-      errorHandling,
-      listOfMembers,
+      disabledButtons,
+      invalidFields,
+      userList,
     } = this.state;
 
     return (
       <>
-        {/* cadastro dos novos usuarios - remover esses comentários */}
         <fieldset>
-          <p>Cadastrar novo usuário</p>
+          <GenericText
+            tag="p"
+            text="Gerenciamento de Usuários"
+          />
           <form onSubmit={ this.handleSubmit }>
-            <label htmlFor="input-name">
-              <input
-                id="input-name"
-                data-testid="admin_manage__input-name"
-                placeholder="Insira seu nome"
-                type="text"
-                name="username"
-                value={ username }
-                onChange={ this.handleChange }
-              />
-            </label>
-            <label htmlFor="input-email">
-              <input
-                id="input-email"
-                data-testid="admin_manage__input-email"
-                placeholder="Insira seu e-mail"
-                type="email"
-                name="email"
-                value={ email }
-                onChange={ this.handleChange }
-              />
-            </label>
-            <label htmlFor="input-password">
-              <input
-                id="input-password"
-                data-testid="admin_manage__input-password"
-                placeholder="Insira sua senha"
-                type="password"
-                name="password"
-                value={ password }
-                onChange={ this.handleChange }
-              />
-            </label>
-            <select
-              data-testid="admin_manage__select-role"
-              id="selectRole"
-              name="role"
+            <GenericInput
+              id="input-name"
+              datatestId="admin_manage__input-name"
+              placeholder="Insira seu nome"
+              type="text"
+              name="username"
+              value={ username }
               onChange={ this.handleChange }
+            />
+            <GenericInput
+              id="input-email"
+              datatestId="admin_manage__input-email"
+              placeholder="Insira seu e-mail"
+              type="email"
+              name="email"
+              value={ email }
+              onChange={ this.handleChange }
+            />
+            <GenericInput
+              id="input-password"
+              datatestId="admin_manage__input-password"
+              placeholder="Insira sua senha"
+              type="password"
+              name="password"
+              value={ password }
+              onChange={ this.handleChange }
+            />
+            <GenericSelect
+              datatestId="admin_manage__select-role"
+              name="role"
               value={ role }
-            >
-              <option>customer</option>
-              <option>seller</option>
-              {/* <option>administrator</option> */}
-            </select>
-            <button
-              data-testid="admin_manage__button-register"
+              onChange={ this.handleChange }
+              options={ availableRoles }
+            />
+            <GenericButton
+              datatestId="admin_manage__button-register"
               type="submit"
-              disabled={ isDisabled }
-            >
-              Cadastrar
-            </button>
+              text="Cadastrar usuário"
+              disabled={ disabledButtons }
+            />
           </form>
-          { errorHandling && (
-            <span data-testid="admin_manage__element-invalid-register">
-              DADOS INVÁLIDOS PARA CADASTRO
-            </span>
+          { invalidFields && (
+            <GenericText
+              tag="span"
+              datatestId="admin_manage__element-invalid-register"
+              text="Os dados digitados são inválidos ou o usuário já está registrado."
+            />
           ) }
         </fieldset>
 
-        {/* iniciei os bonus sem querer  */}
-        <table>
-          <tr>
-            <th>Item</th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Tipo</th>
-            <th>Excluir</th>
-          </tr>
-          { listOfMembers && listOfMembers.map((member, index) => (
-            <tr key={ index }>
-              <th data-testid={ `admin_manage__element-user-table-item-number-${index}` }>
-                { index }
-              </th>
-              <th data-testid={ `admin_manage__element-user-table-item-name-${index}` }>
-                { member.name }
-              </th>
-              <th data-testid={ `admin_manage__element-user-table-item-email-${index}` }>
-                { member.email }
-              </th>
-              <th data-testid={ `admin_manage__element-user-table-item-role-${index}` }>
-                { member.role }
-              </th>
-              <th data-testid={ `admin_manage__element-user-table-item-remove-${index}` }>
-                X
-              </th>
-            </tr>
-          ))}
-        </table>
+        <GenericTable
+          headOptions={ headOptions }
+          data={ userList }
+        />
       </>
     );
   }
