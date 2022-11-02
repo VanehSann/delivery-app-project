@@ -1,10 +1,10 @@
-import propTypes from 'prop-types';
 import React, { Component } from 'react';
+import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import NavBar from '../components/NavBar';
-import ProductCard from '../components/ProductCard';
 import { requestData, requestPost } from '../utils/axios';
 import { getFromLocalStorage } from '../utils/localStorage';
+import NavBar from '../components/NavBar';
+import ProductCard from '../components/ProductCard';
 
 class Customer extends Component {
   constructor() {

@@ -2,8 +2,11 @@ import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userLogin } from '../redux/actions/user';
-import { requestPost, setToken } from '../utils/axios';
+import { requestPost, setTokenInHeaders } from '../utils/axios';
 import { setIntoLocalStorage } from '../utils/localStorage';
+import { PASSWORD_MAX_LENGTH, validateEmail } from '../utils';
+import GenericInput from '../components/GenericInput';
+import GenericButton from '../components/GenericButton';
 
 class Login extends Component {
   constructor() {
@@ -12,41 +15,34 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      isDisabled: true,
-      errorHandling: false,
+      disabledButtons: true,
+      invalidFields: false,
     };
   }
 
-  handleChange = ({ target }) => {
-    const PASSWORD_MAX_LENGTH = 6;
-    const { name, value } = target;
-
+  handleChange = ({ target: { name, value } }) => {
     this.setState({
       [name]: value,
     }, () => {
       const { email, password } = this.state;
-      if (this.validateEmail(email) && password.length >= PASSWORD_MAX_LENGTH) {
+
+      if (validateEmail(email) && password.length >= PASSWORD_MAX_LENGTH) {
         this.setState({
-          isDisabled: false,
+          disabledButtons: false,
         });
       } else {
         this.setState({
-          isDisabled: true,
+          disabledButtons: true,
         });
       }
     });
   };
 
-  validateEmail = (email) => {
-    const emailRegex = /\S+@\S+\.\S+/;
-    return emailRegex.test(email);
-  };
-
   handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { history, dispatchLoginChange } = this.props;
     const { email, password } = this.state;
+    const { history, dispatchLoginChange } = this.props;
 
     try {
       const { name, role, token } = await requestPost('/login', { email, password });
@@ -54,11 +50,11 @@ class Login extends Component {
       dispatchLoginChange(name, email, role);
 
       this.setState({
-        errorHandling: false,
+        invalidFields: false,
       });
 
       setIntoLocalStorage('user', { name, email, role, token });
-      setToken(token);
+      setTokenInHeaders(token);
 
       switch (role) {
       case 'administrator':
@@ -72,7 +68,7 @@ class Login extends Component {
       }
     } catch (error) {
       this.setState({
-        errorHandling: true,
+        invalidFields: true,
       });
     }
   };
@@ -83,52 +79,46 @@ class Login extends Component {
   };
 
   render() {
-    const { email, password, isDisabled, errorHandling } = this.state;
+    const { email, password, disabledButtons, invalidFields } = this.state;
 
     return (
       <fieldset>
         <p>Login</p>
         <form onSubmit={ this.handleSubmit }>
-          <label htmlFor="input-email">
-            <input
-              id="input-email"
-              data-testid="common_login__input-email"
-              placeholder="Insira seu e-mail"
-              type="email"
-              name="email"
-              value={ email }
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="input-password">
-            <input
-              id="input-password"
-              data-testid="common_login__input-password"
-              placeholder="Insira sua senha"
-              type="password"
-              name="password"
-              value={ password }
-              onChange={ this.handleChange }
-            />
-          </label>
-          <button
-            data-testid="common_login__button-login"
+          <GenericInput
+            id="input-email"
+            datatestId="common_login__input-email"
+            placeholder="Insira seu e-mail"
+            type="email"
+            name="email"
+            value={ email }
+            onChange={ this.handleChange }
+          />
+          <GenericInput
+            id="input-password"
+            datatestId="common_login__input-password"
+            placeholder="Insira sua senha"
+            type="password"
+            name="password"
+            value={ password }
+            onChange={ this.handleChange }
+          />
+          <GenericButton
+            datatestId="common_login__button-login"
             type="submit"
-            disabled={ isDisabled }
-          >
-            Entrar
-          </button>
+            disabled={ disabledButtons }
+            text="Entrar"
+          />
         </form>
-        <button
-          data-testid="common_login__button-register"
+        <GenericButton
+          datatestId="common_login__button-register"
           type="button"
+          text="Crie sua conta"
           onClick={ this.redirectToRegister }
-        >
-          Registrar
-        </button>
-        { errorHandling && (
+        />
+        { invalidFields && (
           <span data-testid="common_login__element-invalid-email">
-            DADOS INVÁLIDOS PARA LOGIN
+            E-MAIL OU SENHA INCORRETOS. TENTE NOVAMENTE.
           </span>
         ) }
 

@@ -1,8 +1,8 @@
-import propTypes from 'prop-types';
 import React, { Component } from 'react';
+import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { userRegister } from '../redux/actions/user';
-import { requestPost, setToken } from '../utils/axios';
+import { requestPost, setTokenInHeaders } from '../utils/axios';
 import { setIntoLocalStorage } from '../utils/localStorage';
 
 class Register extends Component {
@@ -63,7 +63,7 @@ class Register extends Component {
         role: 'customer' });
 
       setIntoLocalStorage('user', { name, email, role, token });
-      setToken(token);
+      setTokenInHeaders(token);
 
       dispatchRegisterChange({
         name: userName,
