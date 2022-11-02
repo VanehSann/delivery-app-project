@@ -24,22 +24,22 @@ class GenericTable extends Component {
               />
               <GenericText
                 tag="th"
-                datatestId={ `admin_manage__element-user-table-item-name-${index}` }
+                datatestId={ `admin_manage__element-user-table-name-${index}` }
                 text={ d.name }
               />
               <GenericText
                 tag="th"
-                datatestId={ `admin_manage__element-user-table-item-email-${index}` }
+                datatestId={ `admin_manage__element-user-table-email-${index}` }
                 text={ d.email }
               />
               <GenericText
                 tag="th"
-                datatestId={ `admin_manage__element-user-table-item-role-${index}` }
+                datatestId={ `admin_manage__element-user-table-role-${index}` }
                 text={ d.role }
               />
               <GenericText
                 tag="th"
-                datatestId={ `admin_manage__element-user-table-item-remove-${index}` }
+                datatestId={ `admin_manage__element-user-table-remove-${index}` }
                 text="X"
               />
             </tr>
