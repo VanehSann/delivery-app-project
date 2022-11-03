@@ -13,7 +13,7 @@ const validate = {
 
     next();
   },
- register: async (req, res, next) => {
+  register: async (req, res, next) => {
     const { email } = req.body;
 
     const emailExists = await user.findOne({ where: { email }, raw: true });

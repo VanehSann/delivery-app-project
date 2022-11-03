@@ -1,10 +1,10 @@
-import propTypes from 'prop-types';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import NavBar from '../components/NavBar';
-import ProductCard from '../components/ProductCard';
+import propTypes from 'prop-types';
 import { requestData, requestPost } from '../utils/axios';
 import { getFromLocalStorage } from '../utils/localStorage';
+import NavBar from '../components/NavBar';
+import ProductCard from '../components/ProductCard';
+import GenericButton from '../components/GenericButton';
 
 class Customer extends Component {
   constructor() {
@@ -21,9 +21,11 @@ class Customer extends Component {
 
     try {
       const userData = await requestPost('/login/validate', { token });
+
       if (userData.email !== email) {
         history.push('/');
       }
+
       const products = await requestData('/products');
       this.setState({
         products: [...products],
@@ -34,24 +36,20 @@ class Customer extends Component {
   }
 
   render() {
-    const { history } = this.props;
     const { products } = this.state;
+    const { history } = this.props;
 
     return (
-      <div>
+      <>
         <NavBar history={ history } />
         <ProductCard products={ products } />
-
-        <div>
-          <button
-            data-testid="customer_products__element-navbar-link-logout"
-            type="button"
-            onClick={ this.logoutUser }
-          >
-            Ver Carrinho
-          </button>
-        </div>
-      </div>
+        <GenericButton
+          datatestId="customer_products__element-navbar-link-logout"
+          type="button"
+          onClick={ () => console.log('Ainda não implementado') }
+          text="Ver Carrinho"
+        />
+      </>
     );
   }
 }
@@ -62,4 +60,4 @@ Customer.propTypes = {
   }).isRequired,
 };
 
-export default connect(null, null)(Customer);
+export default Customer;

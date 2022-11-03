@@ -1,62 +1,53 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import { connect } from 'react-redux';
+import GenericText from './GenericText';
+import GenericButton from './GenericButton';
 
-class NavBar extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {};
-  }
-
+class NavBar extends Component {
   logoutUser = () => {
     const { history } = this.props;
-    localStorage.clear();
+    localStorage.removeItem('user');
     history.push('/');
   };
 
   render() {
-    const { state } = this.props;
+    const { userName } = this.props;
 
     return (
-      <div>
-        <nav>
-          <div>
-            <h1
-              data-testid="customer_products__element-navbar-link-products"
-            >
-              Produtos
-            </h1>
-            <h1
-              data-testid="customer_products__element-navbar-link-orders"
-            >
-              Meus Pedidos
-            </h1>
-            <h1
-              data-testid="customer_products__element-navbar-user-full-name"
-            >
-              { state }
-            </h1>
-            <button
-              data-testid="customer_products__element-navbar-link-logout"
-              type="button"
-              onClick={ this.logoutUser }
-            >
-              Sair
-            </button>
-          </div>
-        </nav>
-      </div>
+      <nav>
+        <GenericText
+          tag="h1"
+          datatestId="customer_products__element-navbar-link-products"
+          text="Produtos"
+        />
+        <GenericText
+          tag="h1"
+          datatestId="customer_products__element-navbar-link-orders"
+          text="Meus Pedidos"
+        />
+        <GenericText
+          tag="h1"
+          datatestId="customer_products__element-navbar-user-full-name"
+          text={ userName }
+        />
+        <GenericButton
+          datatestId="customer_products__element-navbar-link-logout"
+          type="button"
+          onClick={ this.logoutUser }
+          text="Sair"
+        />
+      </nav>
     );
   }
 }
 
 const mapStateToProps = ({ userReducer }) => ({
-  state: userReducer.name,
+  userName: userReducer.name,
 });
 
 NavBar.propTypes = {
-  state: propTypes.string.isRequired,
+  userName: propTypes.string.isRequired,
   history: propTypes.shape({
     push: propTypes.func.isRequired,
   }).isRequired,

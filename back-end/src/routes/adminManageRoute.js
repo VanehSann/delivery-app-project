@@ -5,6 +5,7 @@ const validate = require('../middlewares/loginValidation');
 const route = Router();
 
 route.post('/', validate.register, userController.register);
-route.get('/', userController.getAll);
+route.get('/', userController.getAllUsers);
+route.delete('/:id', userController.deleteUser);
 
 module.exports = route;

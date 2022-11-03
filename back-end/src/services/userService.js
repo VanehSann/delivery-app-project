@@ -25,7 +25,7 @@ const userService = {
 
     return userData;
   },
-  getAll: async () => {
+  getAllUsers: async () => {
     const results = await user.findAll();
 
     return results;
@@ -34,6 +34,9 @@ const userService = {
     const result = await user.findOne({ where: { id }, raw: true });
 
     return result;
+  },
+  deleteUser: async (id) => {
+    await user.destroy({ where: { id } });
   },
 };
 

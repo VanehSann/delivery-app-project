@@ -17,8 +17,8 @@ const userController = {
 
     return res.status(StatusCodes.CREATED).json(result);
   },
-  getAll: async (_req, res) => {
-    const result = await userService.getAll();
+  getAllUsers: async (_req, res) => {
+    const result = await userService.getAllUsers();
 
     return res.status(StatusCodes.OK).json(result);
   },
@@ -31,7 +31,13 @@ const userController = {
 
     return res.status(StatusCodes.OK).json({ email, role });
   },
-  
+  deleteUser: async (req, res) => {
+    const { id } = req.params;
+
+    await userService.deleteUser(id);
+
+    return res.status(StatusCodes.OK).end();
+  },
 };
 
 module.exports = userController;
