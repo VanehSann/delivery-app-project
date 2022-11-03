@@ -7,14 +7,14 @@ class ProductCard extends Component {
   //   super();
 
   //   this.state = {
-  //     contador: 0,
+  //     inputValue: '',
   //   };
   // }
 
   // handleChange = ({ target }) => {
-  //   const { name, value } = target;
+  //   const { name, inputValue } = target;
   //   this.setState({
-  //     [name]: value,
+  //     [name]: inputValue,
   //   });
   // };
 
@@ -30,14 +30,22 @@ class ProductCard extends Component {
   // };
 
   render() {
-    const { products, increase, decrease } = this.props;
-    // const products = JSON.parse(localStorage.getItem('products'));
+    const { cartProducts,
+      products,
+      increase,
+      decrease,
+      // handleChange,
+      // inputValue,
+    } = this.props;
 
     return (
       <div>
         <form>
           {/* onSubmit={ this.handleSubmit } */}
-          { products.map((product) => (
+          { (cartProducts || products).map((product) => (
+          // {
+            // const productsCart = cart?.find((c) => c.id === product.id);
+            // return
             <div
               data-testid={ `customer_products__element-card-price-${product.id}` }
               key={ product.id }
@@ -71,9 +79,11 @@ class ProductCard extends Component {
                 type="number"
                 data-testid={ `customer_products__input-card-quantity-${product.id}` }
                 value={ product.qty }
+                name="inputValue"
+                id={ product.id }
                 // min={ 0 }
                 // defaultValue={ 0 }
-                // onChange={ this.handleChange }
+                // onChange={ handleChange }
               />
               <button
                 data-testid={ `customer_products__button-card-add-item-${product.id}` }
@@ -100,6 +110,7 @@ ProductCard.propTypes = {
   products: propTypes.arrayOf(propTypes.shape).isRequired,
   increase: propTypes.func.isRequired,
   decrease: propTypes.func.isRequired,
+  cartProducts: propTypes.arrayOf(propTypes.shape).isRequired,
   // setAddProduct: propTypes.func.isRequired,
 };
 
