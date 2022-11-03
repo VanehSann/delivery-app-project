@@ -34,9 +34,12 @@ class ProductCard extends Component {
       products,
       increase,
       decrease,
-      // handleChange,
-      // inputValue,
+      handleChange,
+      values,
+      teste,
     } = this.props;
+
+    // console.log(values);
 
     return (
       <div>
@@ -76,14 +79,14 @@ class ProductCard extends Component {
                 -
               </button>
               <input
-                type="number"
+                type="text"
                 data-testid={ `customer_products__input-card-quantity-${product.id}` }
-                value={ product.qty }
-                name="inputValue"
+                value={ values[product.id] }
+                name={ `${product.id}` }
                 id={ product.id }
-                // min={ 0 }
-                // defaultValue={ 0 }
-                // onChange={ handleChange }
+                min={ 0 }
+                defaultValue={ 0 }
+                onChange={ handleChange }
               />
               <button
                 data-testid={ `customer_products__button-card-add-item-${product.id}` }
