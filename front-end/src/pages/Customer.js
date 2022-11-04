@@ -1,6 +1,5 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductsCard';
 import { requestData, requestPost } from '../utils/axios';
@@ -103,8 +102,13 @@ class Customer extends Component {
     const storage2 = getFromLocalStorage('cart');
     const totalReduce = storage2
       .reduce((acc, curr) => Number((acc + curr.total).toFixed(2)), 0);
+    const { values } = this.state;
+    const testeArray = newArray.find((prod) => prod.id === id);
     this.setState({
+      values: { ...values, [id]: testeArray.qty },
       cartSum: totalReduce,
+    }, () => {
+      setIntoLocalStorage('values', values);
     });
     if (findProducts.qty === 0) {
       console.log(findProducts.qty, 'log findProducts linha 94');
@@ -112,6 +116,11 @@ class Customer extends Component {
       console.log(removeObj, 'log remove obj 97');
       setIntoLocalStorage('cart', removeObj);
     }
+  };
+
+  logoutUser = () => {
+    const { history } = this.props;
+    history.push('/customer/checkout');
   };
 
   render() {
@@ -135,12 +144,15 @@ class Customer extends Component {
 
         <div>
           <button
-            data-testid="customer_products__element-navbar-link-logout"
+            data-testid="customer_products__button-cart"
             type="button"
             onClick={ this.logoutUser }
+            disabled={ cartSum === 0 }
           >
             Ver Carrinho
-            <p data-testid="customer_products__checkout-bottom-value">{ cartSum }</p>
+            <p data-testid="customer_products__checkout-bottom-value">
+              { cartSum.toString().replace('.', ',') }
+            </p>
           </button>
         </div>
       </div>
@@ -154,4 +166,4 @@ Customer.propTypes = {
   }).isRequired,
 };
 
-export default connect(null, null)(Customer);
+export default Customer;
