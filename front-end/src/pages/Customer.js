@@ -1,6 +1,5 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductsCard';
 import { requestData, requestPost } from '../utils/axios';
@@ -12,8 +11,8 @@ class Customer extends Component {
 
     this.state = {
       products: [],
-      totalfinal2: 0,
-      // inputValue: 0,
+      cartSum: 0,
+      values: {},
     };
   }
 
@@ -41,28 +40,25 @@ class Customer extends Component {
       const totalReduce = storage
         .reduce((acc, curr) => Number((acc + curr.total).toFixed(2)), 0);
       this.setState({
-        totalfinal2: totalReduce,
+        cartSum: totalReduce,
       });
     } catch (error) {
       history.push('/');
     }
   }
 
-  // handleChange = ({ target }) => {
-  //   console.log(target.value, 'log target');
-  //   const { name, value, id } = target;
-  //   const inputValue = value;
-  //   this.setState({
-  //     [name]: inputValue,
-  //   });
-  //   this.increaseProduct(Number(id), Number(inputValue));
-  // };
+  handleChange = ({ target }) => {
+    console.log(target.value, 'log target');
+    const { value, id } = target;
+    const inputValue = value;
+    this.increaseProduct(Number(id), Number(inputValue));
+  };
 
-  increaseProduct = (id) => {
+  increaseProduct = (id, valueProduct) => {
     const storageProducts = getFromLocalStorage('cartProducts');
     const findProducts = storageProducts.find((prod) => prod.id === id);
-    // if (valueProduct) findProducts.qty = valueProduct;
-    findProducts.qty += 1;
+    if (valueProduct) findProducts.qty = valueProduct;
+    if (!valueProduct) findProducts.qty += 1;
     findProducts.total = Number((findProducts.qty * findProducts.price).toFixed(2));
     const indexEl = id - 1;
     const newArray = [
@@ -77,8 +73,14 @@ class Customer extends Component {
     const storage2 = getFromLocalStorage('cart');
     const totalReduce = storage2
       .reduce((acc, curr) => Number((acc + curr.total).toFixed(2)), 0);
+    const { values } = this.state;
+    const testeArray = newArray.find((prod) => prod.id === id);
     this.setState({
-      totalfinal2: totalReduce,
+      values: { ...values, [id]: testeArray.qty },
+      // [id]: findProducts.qty,
+      cartSum: totalReduce,
+    }, () => {
+      setIntoLocalStorage('values', values);
     });
   };
 
@@ -100,8 +102,13 @@ class Customer extends Component {
     const storage2 = getFromLocalStorage('cart');
     const totalReduce = storage2
       .reduce((acc, curr) => Number((acc + curr.total).toFixed(2)), 0);
+    const { values } = this.state;
+    const testeArray = newArray.find((prod) => prod.id === id);
     this.setState({
-      totalfinal2: totalReduce,
+      values: { ...values, [id]: testeArray.qty },
+      cartSum: totalReduce,
+    }, () => {
+      setIntoLocalStorage('values', values);
     });
     if (findProducts.qty === 0) {
       console.log(findProducts.qty, 'log findProducts linha 94');
@@ -111,10 +118,16 @@ class Customer extends Component {
     }
   };
 
+  logoutUser = () => {
+    const { history } = this.props;
+    history.push('/customer/checkout');
+  };
+
   render() {
     const { history } = this.props;
-    const { products, totalfinal2 } = this.state;
+    const { products, cartSum, values } = this.state;
     const storageReturn = getFromLocalStorage('cartProducts');
+    const teste = getFromLocalStorage('values') || { ...values };
 
     return (
       <div>
@@ -124,18 +137,22 @@ class Customer extends Component {
           products={ products }
           increase={ this.increaseProduct }
           decrease={ this.decreaseProduct }
-          // handleChange={ this.handleChange }
-          // inputValue={ inputValue }
+          handleChange={ this.handleChange }
+          values={ values }
+          teste={ teste }
         />
 
         <div>
           <button
-            data-testid="customer_products__element-navbar-link-logout"
+            data-testid="customer_products__button-cart"
             type="button"
             onClick={ this.logoutUser }
+            disabled={ cartSum === 0 }
           >
             Ver Carrinho
-            <p data-testid="customer_products__checkout-bottom-value">{ totalfinal2 }</p>
+            <p data-testid="customer_products__checkout-bottom-value">
+              { cartSum.toString().replace('.', ',') }
+            </p>
           </button>
         </div>
       </div>
@@ -149,4 +166,4 @@ Customer.propTypes = {
   }).isRequired,
 };
 
-export default connect(null, null)(Customer);
+export default Customer;
