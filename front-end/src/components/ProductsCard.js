@@ -15,10 +15,7 @@ class ProductCard extends Component {
       <div>
         <form>
           { (cartP || products).map((product) => (
-            <div
-              // data-testid={ `customer_products__element-card-price-${product.id}` }
-              key={ product.id }
-            >
+            <div key={ product.id }>
               <img
                 data-testid={ `customer_products__img-card-bg-image-${product.id}` }
                 src={ product.url_image }

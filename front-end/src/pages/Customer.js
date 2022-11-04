@@ -1,9 +1,10 @@
-import propTypes from 'prop-types';
 import React, { Component } from 'react';
+import propTypes from 'prop-types';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductsCard';
 import { requestData, requestPost } from '../utils/axios';
 import { getFromLocalStorage, setIntoLocalStorage } from '../utils/localStorage';
+import GenericButton from '../components/GenericButton';
 
 class Customer extends Component {
   constructor() {
@@ -83,8 +84,6 @@ class Customer extends Component {
 
     this.setCheckoutSum();
 
-    // const testeArray = productsArray.find((prod) => prod.id === id);
-
     const { productValue } = this.state;
 
     this.setState({
@@ -101,11 +100,11 @@ class Customer extends Component {
   };
 
   render() {
-    const { history } = this.props;
     const { products, checkoutSum, productValue } = this.state;
+    const { history } = this.props;
 
     return (
-      <div>
+      <>
         <NavBar history={ history } />
         <ProductCard
           cartP={ getFromLocalStorage('cartP') }
@@ -115,19 +114,18 @@ class Customer extends Component {
           productValue={ productValue }
         />
         <div>
-          <button
-            data-testid="customer_products__button-cart"
+          <GenericButton
+            datatestId="customer_products__button-cart"
             type="button"
-            onClick={ this.logoutUser }
             disabled={ checkoutSum === 0 }
-          >
-            Ver Carrinho
-            <p data-testid="customer_products__checkout-bottom-value">
-              { checkoutSum.toFixed(2).toString().replace('.', ',') }
-            </p>
-          </button>
+            onClick={ this.logoutUser }
+            text="Ver Carrinho"
+          />
+          <p data-testid="customer_products__checkout-bottom-value">
+            { checkoutSum.toFixed(2).toString().replace('.', ',') }
+          </p>
         </div>
-      </div>
+      </>
     );
   }
 }
