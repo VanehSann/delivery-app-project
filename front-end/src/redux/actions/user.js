@@ -1,4 +1,4 @@
-import { SET_USER_ACTION } from '../utils';
+import SET_USER_ACTION from '../utils';
 
 export const userLogin = (name, email, role) => ({
   type: SET_USER_ACTION,

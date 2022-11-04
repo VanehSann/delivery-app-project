@@ -1,2 +1,3 @@
-export const SET_USER_ACTION = 'SET_USER_ACTION';
-export const SET_PRODUCT_ACTION = 'SET_PRODUCT_ACTION';
+const SET_USER_ACTION = 'SET_USER_ACTION';
+
+export default SET_USER_ACTION;

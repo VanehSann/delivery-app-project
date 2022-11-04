@@ -11,8 +11,8 @@ class Customer extends Component {
 
     this.state = {
       products: [],
-      cartSum: 0,
-      values: {},
+      checkoutSum: 0,
+      productValue: {},
     };
   }
 
@@ -22,101 +22,77 @@ class Customer extends Component {
 
     try {
       const userData = await requestPost('/login/validate', { token });
+
       if (userData.email !== email) {
         history.push('/');
       }
+
       const products = await requestData('/products');
-      const prodQty = products.map((prod) => ({
-        ...prod,
-        qty: 0,
-      }));
-      this.setState({
-        products: prodQty,
-      });
-      if (!getFromLocalStorage('cartProducts')) {
-        setIntoLocalStorage('cartProducts', prodQty);
-      }
-      const storage = getFromLocalStorage('cart') || [];
-      const totalReduce = storage
-        .reduce((acc, curr) => Number((acc + curr.total).toFixed(2)), 0);
-      this.setState({
-        cartSum: totalReduce,
-      });
+      const prodQty = products.map((prod) => ({ ...prod, qty: 0 }));
+      this.setState({ products: prodQty });
+
+      if (!getFromLocalStorage('cartP')) setIntoLocalStorage('cartP', prodQty);
+
+      this.setCheckoutSum();
     } catch (error) {
       history.push('/');
     }
   }
 
-  handleChange = ({ target }) => {
-    console.log(target.value, 'log target');
-    const { value, id } = target;
-    const inputValue = value;
-    this.increaseProduct(Number(id), Number(inputValue));
+  setCheckoutSum = () => {
+    const storage = getFromLocalStorage('cart') || [];
+    const totalReduce = storage
+      .reduce((acc, curr) => Number((acc + curr.total)), 0);
+    this.setState({ checkoutSum: totalReduce });
   };
 
-  increaseProduct = (id, valueProduct) => {
-    const storageProducts = getFromLocalStorage('cartProducts');
-    const findProducts = storageProducts.find((prod) => prod.id === id);
-    if (valueProduct) findProducts.qty = valueProduct;
-    if (!valueProduct) findProducts.qty += 1;
-    findProducts.total = Number((findProducts.qty * findProducts.price).toFixed(2));
-    const indexEl = id - 1;
-    const newArray = [
-      ...storageProducts.slice(0, indexEl),
-      findProducts, ...storageProducts.slice(indexEl + 1),
-    ];
-    setIntoLocalStorage('cartProducts', newArray);
-    const storage = getFromLocalStorage('cart') || [];
-    storage.push(findProducts);
-    const filteredStorage = storage.filter((el) => el.id !== findProducts.id);
-    setIntoLocalStorage('cart', [...filteredStorage, findProducts]);
-    const storage2 = getFromLocalStorage('cart');
-    const totalReduce = storage2
-      .reduce((acc, curr) => Number((acc + curr.total).toFixed(2)), 0);
-    const testeArray = newArray.find((prod) => prod.id === id);
-    const { values } = this.state;
-    this.setState({
-      values: { ...values, [id]: testeArray.qty },
-      cartSum: totalReduce,
-    }, () => {
-      const { values: value } = this.state;
-      setIntoLocalStorage('values', value);
-    });
-  };
+  createCart = (product) => {
+    const cart = getFromLocalStorage('cart') || [];
+    cart.push(product);
+    const filteredStorage = cart.filter((el) => el.id !== product.id);
+    setIntoLocalStorage('cart', [...filteredStorage, product]);
 
-  decreaseProduct = (id) => {
-    const storageProducts = getFromLocalStorage('cartProducts');
-    const findProducts = storageProducts.find((prod) => prod.id === id);
-    findProducts.qty -= 1;
-    findProducts.total = Number((findProducts.qty * findProducts.price).toFixed(2));
-    const indexEl = id - 1;
-    const newArray = [
-      ...storageProducts.slice(0, indexEl),
-      findProducts, ...storageProducts.slice(indexEl + 1),
-    ];
-    setIntoLocalStorage('cartProducts', newArray);
-    const storage = getFromLocalStorage('cart') || [];
-    storage.push(findProducts);
-    const filteredStorage = storage.filter((el) => el.id !== findProducts.id);
-    setIntoLocalStorage('cart', [...filteredStorage, findProducts]);
-    const storage2 = getFromLocalStorage('cart');
-    const totalReduce = storage2
-      .reduce((acc, curr) => Number((acc + curr.total).toFixed(2)), 0);
-    const testeArray = newArray.find((prod) => prod.id === id);
-    const { values } = this.state;
-    this.setState({
-      values: { ...values, [id]: testeArray.qty },
-      cartSum: totalReduce,
-    }, () => {
-      const { values: value } = this.state;
-      setIntoLocalStorage('values', value);
-    });
-    if (findProducts.qty === 0) {
-      console.log(findProducts.qty, 'log findProducts linha 94');
-      const removeObj = storage2.filter((el) => el.qty > 0);
-      console.log(removeObj, 'log remove obj 97');
-      setIntoLocalStorage('cart', removeObj);
+    if (product.qty === 0) {
+      const updatedCart = getFromLocalStorage('cart');
+      setIntoLocalStorage('cart', updatedCart.filter((el) => el.qty > 0));
     }
+  };
+
+  handleChange = ({ target }) => {
+    const { value, name } = target;
+    this.handleIncreaseDecrease(Number(name), null, Number(value));
+  };
+
+  handleIncreaseDecrease = (id, status, valueProduct) => {
+    const indexEl = id - 1;
+    const products = getFromLocalStorage('cartP');
+    const findP = products.find((prod) => prod.id === id);
+
+    if (valueProduct) findP.qty = valueProduct;
+    if (!valueProduct && status === 'increment') findP.qty += 1;
+    if (!valueProduct && status === 'decrement') findP.qty -= 1;
+
+    findP.total = Number((findP.qty * findP.price));
+
+    const productsArray = [
+      ...products.slice(0, indexEl), findP, ...products.slice(indexEl + 1),
+    ];
+    setIntoLocalStorage('cartP', productsArray);
+
+    this.createCart(findP);
+
+    this.setCheckoutSum();
+
+    // const testeArray = productsArray.find((prod) => prod.id === id);
+
+    const { productValue } = this.state;
+
+    this.setState({
+      productValue: { ...productValue, [id]: findP.qty },
+    }, () => {
+      const { productValue: pValue } = this.state;
+      setIntoLocalStorage('productValue', pValue);
+    });
   };
 
   logoutUser = () => {
@@ -126,33 +102,28 @@ class Customer extends Component {
 
   render() {
     const { history } = this.props;
-    const { products, cartSum, values } = this.state;
-    const storageReturn = getFromLocalStorage('cartProducts');
-    const teste = getFromLocalStorage('values') || { ...values };
+    const { products, checkoutSum, productValue } = this.state;
 
     return (
       <div>
         <NavBar history={ history } />
         <ProductCard
-          cartProducts={ storageReturn }
+          cartP={ getFromLocalStorage('cartP') }
           products={ products }
-          increase={ this.increaseProduct }
-          decrease={ this.decreaseProduct }
+          handleIncreaseDecrease={ this.handleIncreaseDecrease }
           handleChange={ this.handleChange }
-          values={ values }
-          teste={ teste }
+          productValue={ productValue }
         />
-
         <div>
           <button
             data-testid="customer_products__button-cart"
             type="button"
             onClick={ this.logoutUser }
-            disabled={ cartSum === 0 }
+            disabled={ checkoutSum === 0 }
           >
             Ver Carrinho
             <p data-testid="customer_products__checkout-bottom-value">
-              { cartSum.toString().replace('.', ',') }
+              { checkoutSum.toFixed(2).toString().replace('.', ',') }
             </p>
           </button>
         </div>

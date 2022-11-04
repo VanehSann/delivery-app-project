@@ -3,20 +3,20 @@ import React, { Component } from 'react';
 
 class ProductCard extends Component {
   render() {
-    const { cartProducts,
+    const {
+      cartP,
       products,
-      increase,
-      decrease,
+      handleIncreaseDecrease,
       handleChange,
-      values,
+      productValue,
     } = this.props;
 
     return (
       <div>
         <form>
-          { (cartProducts || products).map((product) => (
+          { (cartP || products).map((product) => (
             <div
-              data-testid={ `customer_products__element-card-price-${product.id}` }
+              // data-testid={ `customer_products__element-card-price-${product.id}` }
               key={ product.id }
             >
               <img
@@ -25,40 +25,31 @@ class ProductCard extends Component {
                 alt={ product.name }
                 width="50em"
               />
-              <p
-                data-testid={ `customer_products__element-card-title-${product.id}` }
-              >
+              <p data-testid={ `customer_products__element-card-title-${product.id}` }>
                 { product.name }
               </p>
-              <p
-                data-testid={ `customer_products__element-card-price-${product.id}` }
-              >
-                { `Valor: ${product.price.replace('.', ',')}`}
+              <p data-testid={ `customer_products__element-card-price-${product.id}` }>
+                { `Valor: R$ ${product.price.replace('.', ',')}`}
               </p>
               <button
-                type="button"
-                name="down"
-                disabled={ !values[product.id] }
                 data-testid={ `customer_products__button-card-rm-item-${product.id}` }
-                onClick={ () => decrease(product.id) }
+                type="button"
+                disabled={ !productValue[product.id] }
+                onClick={ () => handleIncreaseDecrease(product.id, 'decrement') }
               >
                 -
               </button>
               <input
-                type="text"
                 data-testid={ `customer_products__input-card-quantity-${product.id}` }
-                value={ values[product.id] }
-                name={ `${product.id}` }
-                id={ product.id }
-                min={ 0 }
-                defaultValue={ 0 }
+                type="text"
+                value={ productValue[product.id] || 0 }
+                name={ product.id }
                 onChange={ handleChange }
               />
               <button
                 data-testid={ `customer_products__button-card-add-item-${product.id}` }
                 type="button"
-                name="up"
-                onClick={ () => increase(product.id) }
+                onClick={ () => handleIncreaseDecrease(product.id, 'increment') }
               >
                 +
               </button>
@@ -72,15 +63,14 @@ class ProductCard extends Component {
 
 ProductCard.propTypes = {
   products: propTypes.arrayOf(propTypes.shape).isRequired,
-  increase: propTypes.func.isRequired,
-  decrease: propTypes.func.isRequired,
+  handleIncreaseDecrease: propTypes.func.isRequired,
   handleChange: propTypes.func.isRequired,
-  values: propTypes.shape(),
-  cartProducts: propTypes.arrayOf(propTypes.shape).isRequired,
+  productValue: propTypes.shape(),
+  cartP: propTypes.arrayOf(propTypes.shape).isRequired,
 };
 
 ProductCard.defaultProps = {
-  values: null,
+  productValue: null,
 };
 
 export default ProductCard;
