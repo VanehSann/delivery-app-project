@@ -20,7 +20,7 @@ class CheckoutTable extends Component {
             <tr key={ `d-${i}` }>
               <GenericText
                 tag="th"
-                datatestId={ ` customer_checkout__element-order-table-item-number-${i}` }
+                datatestId={ `customer_checkout__element-order-table-item-number-${i}` }
                 text={ (i + 1).toString() }
               />
               <GenericText
@@ -36,12 +36,12 @@ class CheckoutTable extends Component {
               <GenericText
                 tag="th"
                 datatestId={ `customer_checkout__element-order-table-unit-price-${i}` }
-                text={ d.price }
+                text={ d.price.replace('.', ',') }
               />
               <GenericText
                 tag="th"
                 datatestId={ `customer_checkout__element-order-table-sub-total-${i}` }
-                text={ d.total.toFixed(2) }
+                text={ d.total.toFixed(2).replace('.', ',') }
               />
               <th>
                 <GenericButton
