@@ -1,4 +1,4 @@
-import data from '../utils/index';
+import data from '../utils';
 
 const { SET_USER_ACTION, SET_USER_ACTION_REGISTER } = data;
 

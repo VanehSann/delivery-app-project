@@ -22,19 +22,13 @@ class Login extends Component {
   }
 
   handleChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
-    }, () => {
+    this.setState({ [name]: value }, () => {
       const { email, password } = this.state;
 
       if (validateEmail(email) && password.length >= PASSWORD_MAX_LENGTH) {
-        this.setState({
-          disabledButtons: false,
-        });
+        this.setState({ disabledButtons: false });
       } else {
-        this.setState({
-          disabledButtons: true,
-        });
+        this.setState({ disabledButtons: true });
       }
     });
   };
@@ -50,9 +44,7 @@ class Login extends Component {
 
       dispatchLoginChange(name, email, role);
 
-      this.setState({
-        invalidFields: false,
-      });
+      this.setState({ invalidFields: false });
 
       setIntoLocalStorage('user', { name, email, role, token });
       setTokenInHeaders(token);
@@ -68,9 +60,7 @@ class Login extends Component {
         history.push('/customer/products');
       }
     } catch (error) {
-      this.setState({
-        invalidFields: true,
-      });
+      this.setState({ invalidFields: true });
     }
   };
 
@@ -131,8 +121,6 @@ class Login extends Component {
     );
   }
 }
-
-// const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchLoginChange: (name, email, role) => dispatch(userLogin(name, email, role)),

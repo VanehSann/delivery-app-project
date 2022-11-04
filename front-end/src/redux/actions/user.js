@@ -10,9 +10,4 @@ export const userRegister = (payload) => ({
   payload,
 });
 
-// export const userAdminManage = (payload) => ({
-//   type: data.SET_USER_ACTION_ADMIN_MANAGER,
-//   payload,
-// });
-
 export default { userLogin, userRegister };

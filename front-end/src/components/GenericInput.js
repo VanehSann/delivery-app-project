@@ -21,13 +21,18 @@ class GenericInput extends Component {
 }
 
 GenericInput.propTypes = {
-  id: propTypes.string.isRequired,
+  id: propTypes.string,
   datatestId: propTypes.string.isRequired,
-  placeholder: propTypes.string.isRequired,
+  placeholder: propTypes.string,
   type: propTypes.string.isRequired,
-  name: propTypes.string.isRequired,
-  value: propTypes.string.isRequired,
+  name: (propTypes.string || propTypes.number).isRequired,
+  value: (propTypes.string || propTypes.number).isRequired,
   onChange: propTypes.func.isRequired,
+};
+
+GenericInput.defaultProps = {
+  id: null,
+  placeholder: null,
 };
 
 export default GenericInput;

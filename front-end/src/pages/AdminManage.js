@@ -44,30 +44,22 @@ class AdminManage extends Component {
       }
       const results = await requestData('/admin/manage');
 
-      this.setState({
-        userList: [...results],
-      });
+      this.setState({ userList: [...results] });
     } catch (error) {
       history.push('/');
     }
   }
 
   handleChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
-    }, () => {
+    this.setState({ [name]: value }, () => {
       const { username, email, password } = this.state;
 
       if (validateEmail(email)
         && password.length >= PASSWORD_MAX_LENGTH
         && username.length >= NAME_MIN_LENGTH) {
-        this.setState({
-          disabledButtons: false,
-        });
+        this.setState({ disabledButtons: false });
       } else {
-        this.setState({
-          disabledButtons: true,
-        });
+        this.setState({ disabledButtons: true });
       }
     });
   };
@@ -97,22 +89,19 @@ class AdminManage extends Component {
 
       dispatchRegisterChange(reduxBody);
 
-      this.setState({
-        userList: [...userList, newUser],
-        invalidFields: false,
-      });
+      this.setState({ userList: [...userList, newUser], invalidFields: false });
     } catch (error) {
-      this.setState({
-        invalidFields: true,
-      });
+      this.setState({ invalidFields: true });
     }
   };
 
   deleteUser = async (id) => {
-    console.log('oie');
-    console.log('id', id);
+    const { userList } = this.state;
+
     try {
       await requestDelete(`/admin/manage/${id}`);
+      const newUsers = userList.filter((user) => user.id !== id);
+      this.setState({ userList: newUsers });
     } catch (error) {
       console.error(error);
     }
