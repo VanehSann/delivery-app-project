@@ -31,7 +31,7 @@ const userService = {
     return results;
   },
   getSellers: async () => {
-    const results = await user.findAll({where: {role: 'seller'}});
+    const results = await user.findAll({ where: { role: 'seller' } });
 
     return results;
   },

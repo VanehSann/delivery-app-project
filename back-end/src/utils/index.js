@@ -5,6 +5,6 @@ const errorMiddlewares = {
   notFoundSale: { message: 'Sale not found' },
   missingFields: { message: 'Some fields are missing' },
   alreadyInUse: { message: 'E-mail already in use' },
-}
+};
 
 module.exports = errorMiddlewares;

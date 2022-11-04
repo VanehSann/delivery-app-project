@@ -1,6 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
 const saleService = require('../services/saleService');
-const { JWT_VERIFY } = require('../utils/jwt');
 
 const saleController = {
   getSales: async (_req, res) => {
