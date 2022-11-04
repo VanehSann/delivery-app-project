@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductsCard';
-import { requestData, requestPost } from '../utils/axios';
+import { requestData, requestPost, setTokenInHeaders } from '../utils/axios';
 import { getFromLocalStorage, setIntoLocalStorage } from '../utils/localStorage';
 import GenericButton from '../components/GenericButton';
 
@@ -23,6 +23,7 @@ class Customer extends Component {
 
     try {
       const userData = await requestPost('/login/validate', { token });
+      setTokenInHeaders(token);
 
       if (userData.email !== email) {
         history.push('/');

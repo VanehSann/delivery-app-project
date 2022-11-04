@@ -2,7 +2,7 @@ import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userLogin } from '../redux/actions/user';
-import { requestPost } from '../utils/axios';
+import { requestPost, setTokenInHeaders } from '../utils/axios';
 import { setIntoLocalStorage } from '../utils/localStorage';
 import { PASSWORD_MAX_LENGTH, validateEmail } from '../utils';
 import GenericText from '../components/GenericText';
@@ -43,6 +43,7 @@ class Login extends Component {
       const { name, role, token } = await requestPost('/login', { email, password });
 
       dispatchLoginChange(name, email, role);
+      setTokenInHeaders(token);
 
       this.setState({ invalidFields: false });
 

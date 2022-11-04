@@ -1,32 +1,36 @@
 import React, { Component } from 'react';
-import CheckoutTable from '../components/CheckoutTable';
+import propTypes from 'prop-types';
 import { headOptionsCheckout } from '../utils';
 import { getFromLocalStorage, setIntoLocalStorage } from '../utils/localStorage';
+import { requestData, requestPost } from '../utils/axios';
+import NavBar from '../components/NavBar';
+import CheckoutTable from '../components/CheckoutTable';
 import GenericText from '../components/GenericText';
 import GenericSelect from '../components/GenericSelect';
 import GenericInput from '../components/GenericInput';
 import GenericButton from '../components/GenericButton';
-import { requestData, requestPost } from '../utils/axios';
 
 class Checkout extends Component {
   constructor() {
     super();
-    this.state = { cart: [],
+    this.state = {
+      cart: [],
       deliveryAddress: '',
       deliveryNumber: '',
       sellers: [],
-      selectedSeller: '' };
+      selectedSeller: '',
+    };
   }
 
   async componentDidMount() {
     const storage = getFromLocalStorage('cart') || [];
-    this.setState({ cart: storage });
-    try {
-      const resultSeller = await requestData('/admin/manage/sellers');
-      this.setState({ sellers: [...resultSeller], selectedSeller: resultSeller[0] });
-    } catch (error) {
-      console.log(error);
-    }
+    const resultSeller = await requestData('/admin/manage/sellers');
+
+    this.setState({
+      cart: storage,
+      sellers: [...resultSeller],
+      selectedSeller: resultSeller[0],
+    });
   }
 
   setCheckoutSum = () => {
@@ -39,41 +43,46 @@ class Checkout extends Component {
   removeItem = (id) => {
     const { cart } = this.state;
     const filterCart = cart.filter((el) => el.id !== id);
+
     setIntoLocalStorage('cart', filterCart);
+
     this.setState({ cart: filterCart });
   };
 
   createSale = async () => {
-    const { deliveryAddress, deliveryNumber, selectedSeller } = this.state;
+    const { deliveryAddress, deliveryNumber, selectedSeller, cart } = this.state;
+    const totalPrice = this.setCheckoutSum().replace(',', '.');
+
     const { token } = getFromLocalStorage('user') || {};
+    const { id } = await requestPost('/login/validate', { token });
+    const sellerId = selectedSeller.id;
 
-    try {
-      const { id } = await requestPost('/login/validate', { token });
-      const totalPrice = this.setCheckoutSum().replace(',', '.');
-      const sellerId = selectedSeller.id;
-      const { cart } = this.state;
-      const pIds = cart.map((product) => ({ id: product.id, quantity: product.qty }));
-      const saleBody = { id,
-        sellerId,
-        totalPrice,
-        deliveryAddress,
-        deliveryNumber,
-        pIds };
-      await requestPost('/sales', saleBody);
-    } catch (error) {
-      console.log(error);
-    }
+    const pIds = cart.map((product) => ({ id: product.id, quantity: product.qty }));
+
+    const saleBody = {
+      id,
+      sellerId,
+      totalPrice,
+      deliveryAddress,
+      deliveryNumber,
+      pIds,
+    };
+
+    const result = await requestPost('/sales', saleBody);
+
+    const { history } = this.props;
+    history.push(`/customer/orders/${result.id}`);
   };
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  };
+  handleChange = ({ target: { name, value } }) => this.setState({ [name]: value });
 
   render() {
     const { cart, deliveryAddress, deliveryNumber, selectedSeller, sellers } = this.state;
-    console.log(sellers);
+    const { history } = this.props;
+
     return (
       <div>
+        <NavBar history={ history } />
         <CheckoutTable
           headOptions={ headOptionsCheckout }
           data={ cart }
@@ -119,5 +128,11 @@ class Checkout extends Component {
     );
   }
 }
+
+Checkout.propTypes = {
+  history: propTypes.shape({
+    push: propTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Checkout;

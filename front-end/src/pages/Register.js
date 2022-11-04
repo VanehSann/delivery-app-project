@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { userRegister } from '../redux/actions/user';
-import { requestPost } from '../utils/axios';
+import { requestPost, setTokenInHeaders } from '../utils/axios';
 import { setIntoLocalStorage } from '../utils/localStorage';
 import { PASSWORD_MAX_LENGTH, NAME_MIN_LENGTH, validateEmail } from '../utils';
 import GenericText from '../components/GenericText';
@@ -61,6 +61,7 @@ class Register extends Component {
       setIntoLocalStorage('user', { name, email, role, token });
 
       dispatchRegisterChange(reduxBody);
+      setTokenInHeaders(token);
 
       this.setState({ invalidFields: false });
 
