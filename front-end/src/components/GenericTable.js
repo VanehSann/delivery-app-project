@@ -9,17 +9,14 @@ class GenericTable extends Component {
     return (
       <table>
         <thead>
-          { headOptions.map(((hOp) => (
-            <tr key={ hOp }>
-              <GenericText
-                tag="th"
-                text={ hOp }
-              />
-            </tr>
-          ))) }
+          <tr>
+            { headOptions.map(((hOp) => (
+              <th key={ hOp }>{ hOp }</th>
+            ))) }
+          </tr>
         </thead>
         <tbody>
-          { data.map(({ id, name, email, role }, index) => (
+          { data.map((d, index) => (
             <tr key={ `d-${index}` }>
               <GenericText
                 tag="th"
@@ -29,26 +26,26 @@ class GenericTable extends Component {
               <GenericText
                 tag="th"
                 datatestId={ `admin_manage__element-user-table-name-${index}` }
-                text={ name }
+                text={ d.name }
               />
               <GenericText
                 tag="th"
                 datatestId={ `admin_manage__element-user-table-email-${index}` }
-                text={ email }
+                text={ d.email }
               />
               <GenericText
                 tag="th"
                 datatestId={ `admin_manage__element-user-table-role-${index}` }
-                text={ role }
+                text={ d.role }
               />
-              <GenericText tag="th">
+              <th>
                 <GenericButton
                   datatestId={ `admin_manage__element-user-table-remove-${index}` }
                   type="button"
-                  onClick={ () => deleteUser(id) }
+                  onClick={ () => deleteUser(d.id) }
                   text="X"
                 />
-              </GenericText>
+              </th>
             </tr>
           )) }
         </tbody>

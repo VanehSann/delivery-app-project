@@ -23,21 +23,15 @@ class Register extends Component {
   }
 
   handleChange = ({ target: { name, value } }) => {
-    this.setState({
-      [name]: value,
-    }, () => {
+    this.setState({ [name]: value }, () => {
       const { userName, userEmail, password } = this.state;
 
       if (validateEmail(userEmail)
         && password.length >= PASSWORD_MAX_LENGTH
         && userName.length >= NAME_MIN_LENGTH) {
-        this.setState({
-          disabledButtons: false,
-        });
+        this.setState({ disabledButtons: false });
       } else {
-        this.setState({
-          disabledButtons: true,
-        });
+        this.setState({ disabledButtons: true });
       }
     });
   };
@@ -69,15 +63,11 @@ class Register extends Component {
 
       dispatchRegisterChange(reduxBody);
 
-      this.setState({
-        invalidFields: false,
-      });
+      this.setState({ invalidFields: false });
 
       history.push('/customer/products');
     } catch (error) {
-      this.setState({
-        invalidFields: true,
-      });
+      this.setState({ invalidFields: true });
     }
   };
 

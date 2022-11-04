@@ -109,10 +109,12 @@ class AdminManage extends Component {
   };
 
   deleteUser = async (id) => {
-    console.log('oie');
-    console.log('id', id);
+    const { userList } = this.state;
+
     try {
       await requestDelete(`/admin/manage/${id}`);
+      const newUsers = userList.filter((user) => user.id !== id);
+      this.setState({ userList: newUsers });
     } catch (error) {
       console.error(error);
     }

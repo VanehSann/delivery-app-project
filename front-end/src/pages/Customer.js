@@ -86,9 +86,7 @@ class Customer extends Component {
 
     const { productValue } = this.state;
 
-    this.setState({
-      productValue: { ...productValue, [id]: findP.qty },
-    }, () => {
+    this.setState({ productValue: { ...productValue, [id]: findP.qty } }, () => {
       const { productValue: pValue } = this.state;
       setIntoLocalStorage('productValue', pValue);
     });
@@ -113,18 +111,16 @@ class Customer extends Component {
           handleChange={ this.handleChange }
           productValue={ productValue }
         />
-        <div>
-          <GenericButton
-            datatestId="customer_products__button-cart"
-            type="button"
-            disabled={ checkoutSum === 0 }
-            onClick={ this.logoutUser }
-            text="Ver Carrinho"
-          />
-          <p data-testid="customer_products__checkout-bottom-value">
-            { checkoutSum.toFixed(2).toString().replace('.', ',') }
-          </p>
-        </div>
+        <GenericButton
+          datatestId="customer_products__button-cart"
+          type="button"
+          disabled={ checkoutSum === 0 }
+          onClick={ this.logoutUser }
+          text={ (
+            <p data-testid="customer_products__checkout-bottom-value">
+              { `Ver Carrinho ${checkoutSum.toFixed(2).toString().replace('.', ',')}` }
+            </p>) }
+        />
       </>
     );
   }
