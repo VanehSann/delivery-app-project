@@ -11,11 +11,7 @@ class GenericSelect extends Component {
         value={ value }
         onChange={ onChange }
       >
-        { options.map((option) => (
-          <option key={ option }>
-            { option }
-          </option>
-        )) }
+        { options.map((option) => <option key={ option }>{ option }</option>) }
       </select>
     );
   }

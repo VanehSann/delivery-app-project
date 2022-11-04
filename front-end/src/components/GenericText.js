@@ -4,11 +4,7 @@ import propTypes from 'prop-types';
 class GenericText extends Component {
   render() {
     const { tag: Tag, datatestId, text } = this.props;
-    return (
-      <Tag data-testid={ datatestId }>
-        { text }
-      </Tag>
-    );
+    return <Tag data-testid={ datatestId }>{ text }</Tag>;
   }
 }
 

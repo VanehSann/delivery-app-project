@@ -1,5 +1,8 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
+import GenericText from './GenericText';
+import GenericButton from './GenericButton';
+import GenericInput from './GenericInput';
 
 class ProductCard extends Component {
   render() {
@@ -12,48 +15,51 @@ class ProductCard extends Component {
     } = this.props;
 
     return (
-      <div>
-        <form>
-          { (cartP || products).map((product) => (
-            <div key={ product.id }>
+      <>
+        { (cartP || products).map((product) => {
+          const { id, name, url_image: urlImage, price } = product;
+          return (
+            <div key={ id }>
               <img
                 data-testid={ `customer_products__img-card-bg-image-${product.id}` }
-                src={ product.url_image }
-                alt={ product.name }
+                src={ urlImage }
+                alt={ name }
                 width="50em"
               />
-              <p data-testid={ `customer_products__element-card-title-${product.id}` }>
-                { product.name }
-              </p>
-              <p data-testid={ `customer_products__element-card-price-${product.id}` }>
-                { `Valor: R$ ${product.price.replace('.', ',')}`}
-              </p>
-              <button
-                data-testid={ `customer_products__button-card-rm-item-${product.id}` }
+              <GenericText
+                tag="p"
+                datatestId={ `customer_products__element-card-title-${id}` }
+                text={ name }
+              />
+              <GenericText
+                tag="p"
+                datatestId={ `customer_products__element-card-price-${id}` }
+                text={ `Valor: R$ ${price.replace('.', ',')}` }
+              />
+              <GenericButton
+                datatestId={ `customer_products__button-card-rm-item-${id}` }
                 type="button"
-                disabled={ !productValue[product.id] }
-                onClick={ () => handleIncreaseDecrease(product.id, 'decrement') }
-              >
-                -
-              </button>
-              <input
-                data-testid={ `customer_products__input-card-quantity-${product.id}` }
+                disabled={ !productValue[id] }
+                onClick={ () => handleIncreaseDecrease(id, 'decrement') }
+                text="-"
+              />
+              <GenericInput
+                datatestId={ `customer_products__input-card-quantity-${id}` }
                 type="text"
-                value={ productValue[product.id] || 0 }
-                name={ product.id }
+                name={ id }
+                value={ productValue[id] || 0 }
                 onChange={ handleChange }
               />
-              <button
-                data-testid={ `customer_products__button-card-add-item-${product.id}` }
+              <GenericButton
+                datatestId={ `customer_products__button-card-add-item-${id}` }
                 type="button"
-                onClick={ () => handleIncreaseDecrease(product.id, 'increment') }
-              >
-                +
-              </button>
+                onClick={ () => handleIncreaseDecrease(id, 'increment') }
+                text="+"
+              />
             </div>
-          )) }
-        </form>
-      </div>
+          );
+        }) }
+      </>
     );
   }
 }
