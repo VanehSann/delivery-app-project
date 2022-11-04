@@ -13,7 +13,7 @@ class GenericSelect extends Component {
       >
         { options.map((option) => (
           <option key={ option }>
-            { option }
+            { typeof option === 'object' ? option.name : option }
           </option>
         )) }
       </select>

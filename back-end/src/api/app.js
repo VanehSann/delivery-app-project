@@ -4,6 +4,7 @@ const loginRoute = require('../routes/loginRoute');
 const registerRoute = require('../routes/registerRoute');
 const adminManageRoute = require('../routes/adminManageRoute');
 const productRoute = require('../routes/productRoute');
+const saleRoute = require('../routes/saleRoute');
 
 const app = express();
 app.use(cors());
@@ -14,5 +15,6 @@ app.use('/login', loginRoute);
 app.use('/register', registerRoute);
 app.use('/admin/manage', adminManageRoute);
 app.use('/products', productRoute);
+app.use('/sales', saleRoute);
 
 module.exports = app;

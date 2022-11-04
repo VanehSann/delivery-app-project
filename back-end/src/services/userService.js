@@ -30,6 +30,11 @@ const userService = {
 
     return results;
   },
+  getSellers: async () => {
+    const results = await user.findAll({where: {role: 'seller'}});
+
+    return results;
+  },
   loginValidate: async (id) => {
     const result = await user.findOne({ where: { id }, raw: true });
 

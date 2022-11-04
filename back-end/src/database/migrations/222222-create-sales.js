@@ -18,6 +18,7 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
         foreignKey: true,
+        allowNull: false,
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         references: {
@@ -28,6 +29,7 @@ module.exports = {
       seller_id: {
         type: Sequelize.INTEGER,
         foreignKey: true,
+        allowNull: false,
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         references: {
