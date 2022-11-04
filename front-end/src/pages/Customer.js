@@ -73,14 +73,14 @@ class Customer extends Component {
     const storage2 = getFromLocalStorage('cart');
     const totalReduce = storage2
       .reduce((acc, curr) => Number((acc + curr.total).toFixed(2)), 0);
-    const { values } = this.state;
     const testeArray = newArray.find((prod) => prod.id === id);
+    const { values } = this.state;
     this.setState({
       values: { ...values, [id]: testeArray.qty },
-      // [id]: findProducts.qty,
       cartSum: totalReduce,
     }, () => {
-      setIntoLocalStorage('values', values);
+      const { values: value } = this.state;
+      setIntoLocalStorage('values', value);
     });
   };
 
@@ -102,13 +102,14 @@ class Customer extends Component {
     const storage2 = getFromLocalStorage('cart');
     const totalReduce = storage2
       .reduce((acc, curr) => Number((acc + curr.total).toFixed(2)), 0);
-    const { values } = this.state;
     const testeArray = newArray.find((prod) => prod.id === id);
+    const { values } = this.state;
     this.setState({
       values: { ...values, [id]: testeArray.qty },
       cartSum: totalReduce,
     }, () => {
-      setIntoLocalStorage('values', values);
+      const { values: value } = this.state;
+      setIntoLocalStorage('values', value);
     });
     if (findProducts.qty === 0) {
       console.log(findProducts.qty, 'log findProducts linha 94');

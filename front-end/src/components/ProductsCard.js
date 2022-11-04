@@ -7,9 +7,8 @@ class ProductCard extends Component {
       products,
       increase,
       decrease,
-      // handleChange,
-      // values,
-      // teste,
+      handleChange,
+      values,
     } = this.props;
 
     return (
@@ -75,7 +74,13 @@ ProductCard.propTypes = {
   products: propTypes.arrayOf(propTypes.shape).isRequired,
   increase: propTypes.func.isRequired,
   decrease: propTypes.func.isRequired,
+  handleChange: propTypes.func.isRequired,
+  values: propTypes.shape(),
   cartProducts: propTypes.arrayOf(propTypes.shape).isRequired,
+};
+
+ProductCard.defaultProps = {
+  values: null,
 };
 
 export default ProductCard;
