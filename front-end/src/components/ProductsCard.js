@@ -69,11 +69,12 @@ ProductCard.propTypes = {
   handleIncreaseDecrease: propTypes.func.isRequired,
   handleChange: propTypes.func.isRequired,
   productValue: propTypes.shape(),
-  cartP: propTypes.arrayOf(propTypes.shape).isRequired,
+  cartP: propTypes.arrayOf(propTypes.shape),
 };
 
 ProductCard.defaultProps = {
   productValue: null,
+  cartP: null,
 };
 
 export default ProductCard;
