@@ -136,5 +136,6 @@ describe(requirement(5), () => {
     expect(
       await action.common.navigate.login.default(page, "customer")
     ).toBeTruthy();
-  }); //
-});
+  });
+}); // tentando subir
+
