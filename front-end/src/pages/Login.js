@@ -43,11 +43,11 @@ class Login extends Component {
       const { name, role, token } = await requestPost('/login', { email, password });
 
       dispatchLoginChange(name, email, role);
+      setTokenInHeaders(token);
 
       this.setState({ invalidFields: false });
 
       setIntoLocalStorage('user', { name, email, role, token });
-      setTokenInHeaders(token);
 
       switch (role) {
       case 'administrator':

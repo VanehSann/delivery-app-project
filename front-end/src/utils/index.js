@@ -10,6 +10,8 @@ const validateEmail = (email) => {
 const availableRoles = ['customer', 'seller'];
 
 const headOptions = ['Item', 'Nome', 'E-mail', 'Tipo', 'Excluir'];
+const headOptionsCheckout = ['Item', 'Descrição', 'Quantidade',
+  'Valor Unitário', 'Sub-total', 'Remover Item'];
 
 export {
   PASSWORD_MAX_LENGTH,
@@ -17,4 +19,5 @@ export {
   validateEmail,
   availableRoles,
   headOptions,
+  headOptionsCheckout,
 };

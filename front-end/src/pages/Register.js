@@ -59,9 +59,9 @@ class Register extends Component {
       const { name, email, role, token } = await requestPost('/register', requestBody);
 
       setIntoLocalStorage('user', { name, email, role, token });
-      setTokenInHeaders(token);
 
       dispatchRegisterChange(reduxBody);
+      setTokenInHeaders(token);
 
       this.setState({ invalidFields: false });
 

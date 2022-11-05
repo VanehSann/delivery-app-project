@@ -5,6 +5,7 @@ import AdminManage from './pages/AdminManage';
 import Customer from './pages/Customer';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Checkout from './pages/Checkout';
 
 class App extends Component {
   render() {
@@ -17,6 +18,7 @@ class App extends Component {
         <Route exact path="/register" component={ Register } />
         <Route exact path="/admin/manage" component={ AdminManage } />
         <Route exact path="/customer/products" component={ Customer } />
+        <Route exact path="/customer/checkout" component={ Checkout } />
       </Switch>
     );
   }

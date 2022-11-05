@@ -10,6 +10,15 @@ const userController = {
 
     return res.status(StatusCodes.OK).json(result);
   },
+  loginValidate: async (req, res) => {
+    const { token } = req.body;
+
+    const data = JWT_VERIFY(token);
+    
+    const { email, role, id } = await userService.loginValidate(data.id);
+
+    return res.status(StatusCodes.CREATED).json({ email, role, id });
+  },
   register: async (req, res) => {
     const { name, email, password, role } = req.body;
 
@@ -22,14 +31,10 @@ const userController = {
 
     return res.status(StatusCodes.OK).json(result);
   },
-  loginValidate: async (req, res) => {
-    const { authorization } = req.headers;
+  getSellers: async (_req, res) => {
+    const result = await userService.getSellers();
 
-    const data = JWT_VERIFY(authorization);
-    
-    const { email, role } = await userService.loginValidate(data.id);
-
-    return res.status(StatusCodes.OK).json({ email, role });
+    return res.status(StatusCodes.OK).json(result);    
   },
   deleteUser: async (req, res) => {
     const { id } = req.params;
