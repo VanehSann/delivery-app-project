@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import GenericText from './GenericText';
 import GenericButton from './GenericButton';
+import GenericText from './GenericText';
 
 class NavBar extends Component {
   logoutUser = () => {
@@ -13,18 +13,20 @@ class NavBar extends Component {
 
   render() {
     const { userName } = this.props;
+    const { pathname } = window.location;
 
     return (
       <nav>
-        <GenericText
+        { !pathname.includes('seller')
+        && (<GenericText
           tag="h1"
           datatestId="customer_products__element-navbar-link-products"
           text="Produtos"
-        />
+        />) }
         <GenericText
           tag="h1"
           datatestId="customer_products__element-navbar-link-orders"
-          text="Meus Pedidos"
+          text={ !pathname.includes('seller') ? 'Meus Pedidos' : 'Pedidos' }
         />
         <GenericText
           tag="h1"
