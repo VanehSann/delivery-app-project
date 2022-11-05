@@ -2,7 +2,7 @@ import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import { setTokenInHeaders } from '../utils/axios';
+import { requestPost, setTokenInHeaders } from '../utils/axios';
 import { getFromLocalStorage } from '../utils/localStorage';
 
 class CustomerOrders extends Component {
@@ -20,13 +20,13 @@ class CustomerOrders extends Component {
     try {
       const { token } = getFromLocalStorage('user') || {};
 
-      // const userData = await requestPost('/login/validate', { token });
+      const userData = await requestPost('/login/validate', { token });
 
       setTokenInHeaders(token);
 
-      // if (userData.role !== 'customer') {
-      //   history.push('/');
-      // }
+      if (userData.role !== 'customer') {
+        history.push('/');
+      }
       const results = await requestData('/customer/orders');
 
       this.setState({
