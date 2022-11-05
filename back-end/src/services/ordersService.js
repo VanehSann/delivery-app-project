@@ -1,44 +1,24 @@
-const { sale, salesProduct, products, sequelize, user } = require('../database/models');
+const { sale, salesProduct, products, user } = require('../database/models');
+
+const attributesArr = ['id', 'totalPrice', 'saleDate', 'status'];
+const attributesArrTwo = ['deliveryAddress', 'deliveryNumber'];
+
+const excludeArr = ['password', 'email', 'role'];
 
 const ordersService = {
   getSales: async (id, role) => {
-    if(role === 'customer') {
-      const result = await sale.findAll({
-        where: { userId: id },
-        attributes: ['id', 'totalPrice', 'deliveryAddress', 'deliveryNumber', 'saleDate', 'status'],
-        include: [{
-          model: user,
-          as: 'user',
-          attributes: {
-            exclude: ['password', 'email', 'role'],
-          },
-        }, {
-          model: user,
-          as: 'seller',
-          attributes: {
-            exclude: ['password', 'email', 'role'],
-          },
-        },
-        ],
-      });
+    if (role === 'customer') {
+      const result = await sale.findAll({ where: { userId: id },
+         attributes: [...attributesArr, ...attributesArrTwo],
+        include: [{ model: user, as: 'user', attributes: { exclude: [...excludeArr] } }, 
+        { model: user, as: 'seller', attributes: { exclude: [...excludeArr] } }] });
       return result;
     }
-    if(role === 'seller') {
-      const result = await sale.findAll({
-        where: { sellerId: id },
-        attributes: ['id', 'totalPrice', 'deliveryAddress', 'deliveryNumber', 'saleDate', 'status'],
-        include: [{
-          model: user,
-          as: 'user',
-          attributes: {
-            exclude: ['password', 'email', 'role'],
-          },
-        }, {
-          model: user,
-          as: 'seller',
-          attributes: {
-            exclude: ['password', 'email', 'role'],
-          },
+    if (role === 'seller') {
+      const result = await sale.findAll({ where: { sellerId: id },
+        attributes: [...attributesArr, ...attributesArrTwo],
+        include: [{ model: user, as: 'user', attributes: { exclude: [...excludeArr] },
+        }, { model: user, as: 'seller', attributes: { exclude: [...excludeArr] },
         },
         ],
       });
@@ -46,21 +26,10 @@ const ordersService = {
     }
   },
   findSaleByPk: async (id) => {
-
     const result = await sale.findByPk(id, {
-      attributes: ['id', 'totalPrice', 'deliveryAddress', 'deliveryNumber', 'saleDate', 'status'],
-      include: [{
-        model: user,
-        as: 'user',
-        attributes: {
-          exclude: ['password', 'email', 'role'],
-        },
-      }, {
-        model: user,
-        as: 'seller',
-        attributes: {
-          exclude: ['password', 'email', 'role'],
-        },
+      attributes: [...attributesArr, ...attributesArrTwo],
+      include: [{ model: user, as: 'user', attributes: { exclude: [...excludeArr] },
+      }, { model: user, as: 'seller', attributes: { exclude: [...excludeArr] },
       },
       ],
     });
@@ -70,7 +39,7 @@ const ordersService = {
   const { name } = await products.findByPk(productId);
 
   // sellerName
- const sellerName = await user.findOne({ where: { id: result.sellerId, role: 'seller' } })
+ const sellerName = await user.findOne({ where: { id: result.sellerId, role: 'seller' } });
 
     return { ...result, quantity, name, sellerName: sellerName.name };
   },

@@ -3,7 +3,7 @@ const ordersService = require('../services/ordersService');
 const { JWT_VERIFY } = require('../utils/jwt');
 
 const ordersController = {
-  getSales: async (_req, res) => {
+  getSales: async (req, res) => {
     const { authorization } = req.headers;
     const user = await JWT_VERIFY(authorization);
     const result = await ordersService.getSales(user.id, user.role);
