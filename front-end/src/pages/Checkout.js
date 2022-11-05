@@ -60,10 +60,11 @@ class Checkout extends Component {
   };
 
   createSale = async () => {
-    const { id, deliveryAddress, deliveryNumber, selectedSeller, cart } = this.state;
+    const { id, cart, deliveryAddress, deliveryNumber, sellers,
+      selectedSeller } = this.state;
     const totalPrice = this.setCheckoutSum().replace(',', '.');
 
-    const sellerId = selectedSeller.id;
+    const sellerId = selectedSeller.id || sellers[0].id;
 
     const pIds = cart.map((product) => ({ id: product.id, quantity: product.qty }));
 
