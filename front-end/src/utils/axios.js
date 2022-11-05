@@ -22,4 +22,9 @@ export const requestDelete = async (endpoint) => {
   await API.delete(endpoint);
 };
 
+export const requestPut = async (endpoint, body) => {
+  const { data } = await API.put(endpoint, body);
+  return data;
+};
+
 export default API;
