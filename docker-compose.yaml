@@ -1,0 +1,64 @@
+services:
+
+  frontend:
+    image: node:16.18
+    platform: linux/x86_64
+    container_name: delivery_app_frontend
+    build: ./front-end
+    ports:
+      - 3000:3000
+    working_dir: /app/front-end
+    volumes:
+      - ./front-end:/app/front-end
+    tty: true
+    stdin_open: true
+    command: bash
+    restart: always
+    depends_on:
+      - backend
+    networks:
+      - vitual_wan_Front-to-Back
+
+  backend:
+    image: node:16.18
+    platform: linux/x86_64
+    container_name: delivery_app_backend
+    build: ./back-end
+    working_dir: /app/back-end
+    volumes:
+      - ./back-end:/app/back-end
+    tty: true
+    stdin_open: true
+    command: bash
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 3001:3001
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      HOSTNAME: db
+    networks:
+      - vitual_wan_Front-to-Back
+      - vitual_lan_Back-to-DB
+
+  db:
+    image: mysql:8.0.31
+    platform: linux/x86_64
+    container_name: delivery_app_db
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_HOST: localhost
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DB_NAME: delivery-app
+    networks:
+      - vitual_lan_Back-to-DB
+    cap_add:
+      - SYS_NICE
+
+networks:
+  vitual_wan_Front-to-Back: {}
+  vitual_lan_Back-to-DB: {}
