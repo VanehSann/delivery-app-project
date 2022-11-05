@@ -22,7 +22,10 @@ GenericButton.propTypes = {
   type: propTypes.string.isRequired,
   disabled: propTypes.bool,
   onClick: propTypes.func,
-  text: propTypes.string.isRequired,
+  text: propTypes.oneOfType([
+    propTypes.string,
+    propTypes.shape(),
+  ]).isRequired,
 };
 
 GenericButton.defaultProps = {

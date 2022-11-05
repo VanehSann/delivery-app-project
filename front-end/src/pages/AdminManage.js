@@ -17,7 +17,7 @@ import GenericText from '../components/GenericText';
 import GenericInput from '../components/GenericInput';
 import GenericButton from '../components/GenericButton';
 import GenericSelect from '../components/GenericSelect';
-import GenericTable from '../components/GenericTable';
+import UserManageTable from '../components/UserManageTable';
 
 class AdminManage extends Component {
   constructor() {
@@ -180,7 +180,7 @@ class AdminManage extends Component {
             />
           ) }
         </fieldset>
-        <GenericTable
+        <UserManageTable
           headOptions={ headOptions }
           data={ userList }
           deleteUser={ this.deleteUser }

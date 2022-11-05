@@ -15,7 +15,10 @@ class GenericText extends Component {
 GenericText.propTypes = {
   tag: propTypes.string.isRequired,
   datatestId: propTypes.string,
-  text: propTypes.string.isRequired,
+  text: propTypes.oneOfType([
+    propTypes.string,
+    propTypes.number,
+  ]).isRequired,
 };
 
 GenericText.defaultProps = {

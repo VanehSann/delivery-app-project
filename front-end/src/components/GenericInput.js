@@ -25,8 +25,14 @@ GenericInput.propTypes = {
   datatestId: propTypes.string.isRequired,
   placeholder: propTypes.string,
   type: propTypes.string.isRequired,
-  name: (propTypes.string || propTypes.number).isRequired,
-  value: (propTypes.string || propTypes.number).isRequired,
+  name: propTypes.oneOfType([
+    propTypes.number,
+    propTypes.string,
+  ]).isRequired,
+  value: propTypes.oneOfType([
+    propTypes.number,
+    propTypes.string,
+  ]).isRequired,
   onChange: propTypes.func.isRequired,
 };
 

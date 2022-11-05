@@ -14,6 +14,7 @@ class Checkout extends Component {
   constructor() {
     super();
     this.state = {
+      id: 0,
       cart: [],
       deliveryAddress: '',
       deliveryNumber: '',
@@ -24,6 +25,7 @@ class Checkout extends Component {
 
   async componentDidMount() {
     const storage = getFromLocalStorage('cart') || [];
+    const { token } = getFromLocalStorage('user') || {};
     const resultSeller = await requestData('/admin/manage/sellers');
 
     this.setState({
@@ -31,6 +33,14 @@ class Checkout extends Component {
       sellers: [...resultSeller],
       selectedSeller: resultSeller[0],
     });
+
+    try {
+      const { id } = await requestPost('/login/validate', { token });
+      this.setState({ id });
+    } catch (error) {
+      const { history } = this.props;
+      history.push('/');
+    }
   }
 
   setCheckoutSum = () => {
@@ -50,11 +60,9 @@ class Checkout extends Component {
   };
 
   createSale = async () => {
-    const { deliveryAddress, deliveryNumber, selectedSeller, cart } = this.state;
+    const { id, deliveryAddress, deliveryNumber, selectedSeller, cart } = this.state;
     const totalPrice = this.setCheckoutSum().replace(',', '.');
 
-    const { token } = getFromLocalStorage('user') || {};
-    const { id } = await requestPost('/login/validate', { token });
     const sellerId = selectedSeller.id;
 
     const pIds = cart.map((product) => ({ id: product.id, quantity: product.qty }));
@@ -121,6 +129,7 @@ class Checkout extends Component {
         <GenericButton
           datatestId="customer_checkout__button-submit-order"
           type="button"
+          disabled={ !deliveryAddress || !deliveryNumber || !cart.length }
           onClick={ this.createSale }
           text="Finalizar Pedido"
         />
