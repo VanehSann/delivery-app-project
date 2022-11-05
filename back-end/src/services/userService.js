@@ -14,6 +14,11 @@ const userService = {
 
     return userData;
   },
+  loginValidate: async (id) => {
+    const result = await user.findOne({ where: { id }, raw: true });
+
+    return result;
+  },
   register: async (userName, mail, password, userRole) => {
     const decodedPassword = md5(password);    
     const created = await user
@@ -34,11 +39,6 @@ const userService = {
     const results = await user.findAll({ where: { role: 'seller' } });
 
     return results;
-  },
-  loginValidate: async (id) => {
-    const result = await user.findOne({ where: { id }, raw: true });
-
-    return result;
   },
   deleteUser: async (id) => {
     await user.destroy({ where: { id } });

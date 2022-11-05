@@ -21,6 +21,27 @@ const saleService = {
     });
     return result;
   },
+  findSaleByPk: async (id) => {
+    const result = await sale.findByPk(id, {
+      attributes: ['id', 'totalPrice', 'deliveryAddress', 'deliveryNumber', 'saleDate', 'status'],
+      include: [{
+        model: user,
+        as: 'user',
+        attributes: {
+          exclude: ['password', 'email', 'role'],
+        },
+      }, {
+        model: user,
+        as: 'seller',
+        attributes: {
+          exclude: ['password', 'email', 'role'],
+        },
+      },
+      ],
+    });
+
+    return result;
+  },
   createSale: async ({ userId, sellerId, totalPrice, deliveryAddress, deliveryNumber, pIds }) => {
     const transactionResult = await sequelize.transaction(async (transaction) => {
       const newSaleObject = {
@@ -43,27 +64,6 @@ const saleService = {
     });
 
     return transactionResult;
-  },
-  findSaleByPk: async (id) => {
-    const result = await sale.findByPk(id, {
-      attributes: ['id', 'totalPrice', 'deliveryAddress', 'deliveryNumber', 'saleDate', 'status'],
-      include: [{
-        model: user,
-        as: 'user',
-        attributes: {
-          exclude: ['password', 'email', 'role'],
-        },
-      }, {
-        model: user,
-        as: 'seller',
-        attributes: {
-          exclude: ['password', 'email', 'role'],
-        },
-      },
-      ],
-    });
-
-    return result;
   },
   updateSale: async (id, newData) => {
     const toBeUpdatedSale = await saleService.findSaleByPk(id);
