@@ -45,7 +45,7 @@ class SellerOrders extends Component {
       <>
         <NavBar history={ history } />
 
-        {sales[0].order.id && sales.map((order, index) => (
+        {sales[0].id && sales.map((order, index) => (
           <Link
             to={ `/seller/orders/${order.id}` }
             key={ index }
