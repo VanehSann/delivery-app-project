@@ -94,7 +94,7 @@ class CustomerOrdersDetails extends Component {
                Marcar como entregue
              </button>
              <table>
-               {saleInfo && saleInfo.map((item, indexSaleInfo) => (
+               {saleInfo[0].name && saleInfo.map((item, indexSaleInfo) => (
 
                  <tbody key="index">
                    <tr>
