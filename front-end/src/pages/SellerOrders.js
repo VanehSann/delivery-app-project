@@ -1,6 +1,5 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { requestPost, setTokenInHeaders } from '../utils/axios';
 import { getFromLocalStorage } from '../utils/localStorage';
@@ -46,8 +45,9 @@ class SellerOrders extends Component {
         <NavBar history={ history } />
 
         {sales[0].id && sales.map((order, index) => (
-          <Link
-            to={ `/seller/orders/${order.id}` }
+          <button
+            type="button"
+            onClick={ `/seller/orders/${order.id}` }
             key={ index }
             id={ order.id }
           >
@@ -68,7 +68,7 @@ class SellerOrders extends Component {
                 {`${order.deliveryAddress}, ${order.deliveryNumber}`}
               </span>
             </div>
-          </Link>
+          </button>
         ))}
       </>
     );

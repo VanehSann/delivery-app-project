@@ -1,18 +1,17 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import { requestPost, setTokenInHeaders } from '../utils/axios';
+import { requestData, requestPost, setTokenInHeaders } from '../utils/axios';
 import { getFromLocalStorage } from '../utils/localStorage';
 
 class CustomerOrders extends Component {
-  // constructor() {
-  //   super();
+  constructor() {
+    super();
 
-  //   this.state = {
-  //     sales: [],
-  //   };
-  // }
+    this.state = {
+      sales: [],
+    };
+  }
 
   async componentDidMount() {
     const { history } = this.props;
@@ -27,11 +26,11 @@ class CustomerOrders extends Component {
       if (userData.role !== 'customer') {
         history.push('/');
       }
-      // const results = await requestData('/customer/orders');
+      const results = await requestData('/customer/orders');
 
-      // this.setState({
-      //   sales: [...results],
-      // });
+      this.setState({
+        sales: [...results],
+      });
     } catch (error) {
       history.push('/');
     }
@@ -39,19 +38,20 @@ class CustomerOrders extends Component {
 
   render() {
     const { history } = this.props;
-    // const { sales } = this.state;
-    const sales = [{ id: 1,
-      status: 'status',
-      saleDate: '01/01/2022',
-      salePrice: '2.50' }];
+    const { sales } = this.state;
+    // const sales = [{ id: 1,
+    //   status: 'status',
+    //   saleDate: '01/01/2022',
+    //   salePrice: '2.50' }];
 
     return (
       <>
         <NavBar history={ history } />
 
         {sales[0].id && sales.map((order, index) => (
-          <Link
-            to={ `/customer/orders/${order.id}` }
+          <button
+            type="button"
+            onClick={ `/customer/orders/${order.id}` }
             key={ index }
             id={ order.id }
           >
@@ -71,7 +71,7 @@ class CustomerOrders extends Component {
                 {order.totalPrice}
               </span>
             </div>
-          </Link>
+          </button>
         ))}
       </>
     );
