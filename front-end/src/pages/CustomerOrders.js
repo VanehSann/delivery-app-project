@@ -1,51 +1,51 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import { requestPost, setTokenInHeaders } from '../utils/axios';
-import { getFromLocalStorage } from '../utils/localStorage';
+// import { requestPost, setTokenInHeaders } from '../utils/axios';
+// import { getFromLocalStorage } from '../utils/localStorage';
 
 class CustomerOrders extends Component {
-  constructor() {
-    super();
+  // constructor() {
+  //   super();
 
-    this.state = {
-      sales: [],
-    };
-  }
+  //   this.state = {
+  //     sales: [],
+  //   };
+  // }
 
-  async componentDidMount() {
-    const { history } = this.props;
+  // async componentDidMount() {
+  //   const { history } = this.props;
 
-    try {
-      const { token } = getFromLocalStorage('user') || {};
+  //   try {
+  //     const { token } = getFromLocalStorage('user') || {};
 
-      const userData = await requestPost('/login/validate', { token });
+  //     const userData = await requestPost('/login/validate', { token });
 
-      setTokenInHeaders(token);
+  //     setTokenInHeaders(token);
 
-      if (userData.role !== 'customer') {
-        history.push('/');
-      }
-      const results = await requestData('/customer/orders');
+  //     if (userData.role !== 'customer') {
+  //       history.push('/');
+  //     }
+  //     const results = await requestData('/customer/orders');
 
-      this.setState({
-        sales: [...results],
-      });
-    } catch (error) {
-      history.push('/');
-    }
-  }
+  //     this.setState({
+  //       sales: [...results],
+  //     });
+  //   } catch (error) {
+  //     history.push('/');
+  //   }
+  // }
 
   render() {
     const { history } = this.props;
-    const { sales } = this.state;
+    // const { sales } = this.state;
 
     return (
       <>
         <NavBar history={ history } />
 
-        {sales && sales.map((order, index) => (
+        {/* {sales && sales.map((order, index) => (
           <Link
             to={ `/customer/orders/${order.id}` }
             key={ index }
@@ -68,7 +68,7 @@ class CustomerOrders extends Component {
               </span>
             </div>
           </Link>
-        ))}
+        ))} */}
       </>
     );
   }
