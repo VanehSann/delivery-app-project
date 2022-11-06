@@ -1,62 +1,62 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
-// import NavBar from '../components/NavBar';
-// import { requestPost, requestPut, setTokenInHeaders } from '../utils/axios';
-// import { getFromLocalStorage } from '../utils/localStorage';
+import NavBar from '../components/NavBar';
+import { requestPost, requestPut, setTokenInHeaders } from '../utils/axios';
+import { getFromLocalStorage } from '../utils/localStorage';
 
-// const dataTestId = 'seller_order_details__element-order-details-label-';
-// const dataTestIdTable = 'seller_order_details__element-order-table-';
+const dataTestId = 'seller_order_details__element-order-details-label-';
+const dataTestIdTable = 'seller_order_details__element-order-table-';
 
 class SellerOrdersDetails extends Component {
-  // constructor() {
-  //   super();
+  constructor() {
+    super();
 
-  //   this.state = {
-  //     sales: [],
-  //     saleInfo: [],
-  //   };
-  // }
+    this.state = {
+      sales: [],
+      saleInfo: [],
+    };
+  }
 
-  // async componentDidMount() {
-  //   const { history } = this.props;
+  async componentDidMount() {
+    const { history } = this.props;
 
-  //   try {
-  //     const { token } = getFromLocalStorage('user') || {};
+    try {
+      const { token } = getFromLocalStorage('user') || {};
 
-  //     const userData = await requestPost('/login/validate', { token });
+      const userData = await requestPost('/login/validate', { token });
 
-  //     setTokenInHeaders(token);
+      setTokenInHeaders(token);
 
-  //     if (userData.role !== 'seller') {
-  //       history.push('/');
-  //     }
-  //     const results = await requestData('/seller/orders');
-  //     const resultsById = await requestData(`/seller/orders/${id}`);
+      if (userData.role !== 'seller') {
+        history.push('/');
+      }
+      const results = await requestData('/seller/orders');
+      const resultsById = await requestData(`/seller/orders/${id}`);
 
-  //     this.setState({
-  //       sales: [...results],
-  //       saleInfo: [...resultsById],
-  //     });
-  //   } catch (error) {
-  //     history.push('/');
-  //   }
-  // }
+      this.setState({
+        sales: [...results],
+        saleInfo: [...resultsById],
+      });
+    } catch (error) {
+      history.push('/');
+    }
+  }
 
   // async updateStatus(newStatus) {
   //   await requestPut('seller/orders/:id', newStatus);
   // }
 
   render() {
-    // const { history, id } = this.props;
-    // const { sales, saleInfo } = this.state;
+    const { history, id } = this.props;
+    const { sales, saleInfo } = this.state;
     // const id = window.location.pathname.replace('seller/orders/', '');
 
     return (
       <>
-        {/* <NavBar history={ history } /> */}
+        <NavBar history={ history } />
 
         <h2>Detalhe do Pedido</h2>
-        {/* {sales && sales.filter((sale) => sale.id === Number(id)).map((order, index) => (
+        {sales && sales.filter((sale) => sale.id === Number(id)).map((order, index) => (
           <div key={ index }>
             <span
               data-testid={ `${dataTestId}order-id` }
@@ -140,7 +140,7 @@ class SellerOrdersDetails extends Component {
             </span>
           </div>
 
-        ))} */}
+        ))}
       </>
     );
   }
@@ -150,7 +150,7 @@ SellerOrdersDetails.propTypes = {
   history: propTypes.shape({
     push: propTypes.func.isRequired,
   }).isRequired,
-  // id: propTypes.string.isRequired,
+  id: propTypes.string.isRequired,
 };
 
 export default SellerOrdersDetails;
