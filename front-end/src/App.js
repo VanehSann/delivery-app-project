@@ -4,8 +4,8 @@ import './App.css';
 import AdminManage from './pages/AdminManage';
 import Checkout from './pages/Checkout';
 import Customer from './pages/Customer';
-// import CustomerOrders from './pages/CustomerOrders';
-// import CustomerOrdersDetails from './pages/CustomerOrdersDetails';
+import CustomerOrders from './pages/CustomerOrders';
+import CustomerOrdersDetails from './pages/CustomerOrdersDetails';
 import Login from './pages/Login';
 import Register from './pages/Register';
 // import SellerOrders from './pages/SellerOrders';
@@ -23,9 +23,9 @@ class App extends Component {
         <Route exact path="/admin/manage" component={ AdminManage } />
         <Route exact path="/customer/products" component={ Customer } />
         <Route exact path="/customer/checkout" component={ Checkout } />
-        {/* <Route exact path="/customer/orders" component={ CustomerOrders } />
+        <Route exact path="/customer/orders" component={ CustomerOrders } />
         <Route exact path="/customer/orders/:id" component={ CustomerOrdersDetails } />
-        <Route exact path="/seller/orders" component={ SellerOrders } />
+        {/* <Route exact path="/seller/orders" component={ SellerOrders } />
         <Route exact path="/seller/orders/:id" component={ SellerOrdersDetails } /> */}
       </Switch>
     );
