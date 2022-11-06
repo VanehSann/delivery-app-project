@@ -5,7 +5,7 @@ const registerRoute = require('../routes/registerRoute');
 const adminManageRoute = require('../routes/adminManageRoute');
 const productRoute = require('../routes/productRoute');
 const saleRoute = require('../routes/saleRoute');
-// const sellerOrdersRoute = require('../routes/sellerOrdersRoute');
+const sellerOrdersRoute = require('../routes/sellerOrdersRoute');
 const customerOrdersRoute = require('../routes/customerOrdersRoute');
 
 const app = express();
@@ -19,6 +19,6 @@ app.use('/admin/manage', adminManageRoute);
 app.use('/products', productRoute);
 app.use('/sales', saleRoute);
 app.use('/customer/orders', customerOrdersRoute);
-// app.use('/seller/orders', sellerOrdersRoute);
+app.use('/seller/orders', sellerOrdersRoute);
 
 module.exports = app;

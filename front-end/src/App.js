@@ -8,8 +8,8 @@ import CustomerOrders from './pages/CustomerOrders';
 import CustomerOrdersDetails from './pages/CustomerOrdersDetails';
 import Login from './pages/Login';
 import Register from './pages/Register';
-// import SellerOrders from './pages/SellerOrders';
-// import SellerOrdersDetails from './pages/SellerOrdersDetails';
+import SellerOrders from './pages/SellerOrders';
+import SellerOrdersDetails from './pages/SellerOrdersDetails';
 
 class App extends Component {
   render() {
@@ -25,8 +25,8 @@ class App extends Component {
         <Route exact path="/customer/checkout" component={ Checkout } />
         <Route exact path="/customer/orders" component={ CustomerOrders } />
         <Route exact path="/customer/orders/:id" component={ CustomerOrdersDetails } />
-        {/* <Route exact path="/seller/orders" component={ SellerOrders } />
-        <Route exact path="/seller/orders/:id" component={ SellerOrdersDetails } /> */}
+        <Route exact path="/seller/orders" component={ SellerOrders } />
+        <Route exact path="/seller/orders/:id" component={ SellerOrdersDetails } />
       </Switch>
     );
   }
