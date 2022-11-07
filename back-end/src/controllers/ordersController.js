@@ -1,12 +1,10 @@
 const { StatusCodes } = require('http-status-codes');
 const ordersService = require('../services/ordersService');
-const { JWT_VERIFY } = require('../utils/jwt');
 
 const ordersController = {
   getSales: async (req, res) => {
-    const { authorization } = req.headers;
-    const user = await JWT_VERIFY(authorization);
-    const result = await ordersService.getSales(user.id, user.role);
+    const { id, role } = req.body;
+    const result = await ordersService.getSales(id, role);
     return res.status(StatusCodes.OK).json(result);
   },
   findSaleByPk: async (req, res) => {
