@@ -18,18 +18,18 @@ class SellerOrdersDetails extends Component {
   }
 
   async componentDidMount() {
-    const { history } = this.props;
+    // const { history } = this.props;
 
     try {
       const { token } = getFromLocalStorage('user') || {};
 
-      const userData = await requestPost('/login/validate', { token });
+      await requestPost('/login/validate', { token });
 
       setTokenInHeaders(token);
 
-      if (userData.role !== 'seller') {
-        history.push('/');
-      }
+      // if (userData.role !== 'seller') {
+      //   history.push('/');
+      // }
       const results = await requestData('/seller/orders');
       const resultsById = await requestData(`/seller/orders/${id}`);
 
@@ -38,7 +38,7 @@ class SellerOrdersDetails extends Component {
         saleInfo: [...resultsById],
       });
     } catch (error) {
-      history.push('/');
+      // history.push('/');
     }
   }
 

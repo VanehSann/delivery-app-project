@@ -14,25 +14,26 @@ class SellerOrders extends Component {
   }
 
   async componentDidMount() {
-    const { history } = this.props;
+    // const { history } = this.props;
 
     try {
       const { token } = getFromLocalStorage('user') || {};
 
-      const userData = await requestPost('/login/validate', { token });
+      const { id, role } = await requestPost('/login/validate', { token });
 
       setTokenInHeaders(token);
 
-      if (userData.role !== 'seller') {
-        history.push('/');
-      }
-      const results = await requestData('/seller/orders');
+      // if (role !== 'seller') {
+      //   history.push('/');
+      // }
+      const results = await requestPost('/seller/orders', { id, role });
 
       this.setState({
         sales: [...results],
       });
     } catch (error) {
-      history.push('/');
+      console.log(error);
+      // history.push('/');
     }
   }
 
@@ -43,33 +44,35 @@ class SellerOrders extends Component {
     return (
       <>
         <NavBar history={ history } />
-
-        {sales[0].id && sales.map((order, index) => (
-          <button
-            type="button"
-            onClick={ `/seller/orders/${order.id}` }
-            key={ index }
-            id={ order.id }
-          >
-            <div key={ index }>
+        { sales.map((order, index) => (
+          <label key={ index } htmlFor={ order.id }>
+            <div>
               <span data-testid={ `seller_orders__element-order-id-${order.id}` }>
-                {order.id}
+                { order.id }
               </span>
               <span data-testid={ `seller_orders__element-delivery-status-${order.id}` }>
-                {order.status}
+                { order.status }
               </span>
               <span data-testid={ `seller_orders__element-order-date-${order.id}` }>
-                {order.saleDate}
+                { order.saleDate }
               </span>
               <span data-testid={ `seller_orders__element-card-price-${order.id}` }>
-                {order.totalPrice}
+                { order.totalPrice }
               </span>
               <span data-testid={ `seller_orders__element-card-address-${order.id}` }>
-                {`${order.deliveryAddress}, ${order.deliveryNumber}`}
+                { `${order.deliveryAddress}, ${order.deliveryNumber}` }
               </span>
             </div>
-          </button>
-        ))}
+            <button
+              type="button"
+              onClick={ () => history.push(`/seller/orders/${order.id}`) }
+              key={ index }
+              id={ order.id }
+            >
+              Botão
+            </button>
+          </label>
+        )) }
       </>
     );
   }

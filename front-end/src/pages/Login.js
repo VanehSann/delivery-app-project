@@ -25,8 +25,17 @@ class Login extends Component {
     const { history } = this.props;
     const { token, role } = getFromLocalStorage('user') || {};
 
-    if (token && role === 'customer') {
-      history.push('/customer/products');
+    if (token) {
+      switch (role) {
+      case 'administrator':
+        history.push('/admin/manage');
+        break;
+      case 'seller':
+        history.push('/seller/orders');
+        break;
+      default:
+        history.push('/customer/products');
+      }
     }
   }
 

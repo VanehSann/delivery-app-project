@@ -41,7 +41,6 @@ class CustomerOrders extends Component {
     return (
       <>
         <NavBar history={ history } />
-
         { sales.map((order, index) => (
           <label key={ index } htmlFor={ order.id }>
             <div>
