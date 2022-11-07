@@ -12,6 +12,8 @@ const availableRoles = ['customer', 'seller'];
 const headOptions = ['Item', 'Nome', 'E-mail', 'Tipo', 'Excluir'];
 const headOptionsCheckout = ['Item', 'Descrição', 'Quantidade',
   'Valor Unitário', 'Sub-total', 'Remover Item'];
+const headOptionsCheckout2 = ['Item', 'Descrição', 'Quantidade',
+  'Valor Unitário', 'Sub-total'];
 
 export {
   PASSWORD_MAX_LENGTH,
@@ -20,4 +22,5 @@ export {
   availableRoles,
   headOptions,
   headOptionsCheckout,
+  headOptionsCheckout2,
 };

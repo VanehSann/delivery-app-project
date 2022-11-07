@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import NavBar from '../components/NavBar';
-import { requestData, requestPost, setTokenInHeaders } from '../utils/axios';
+import { requestPost, setTokenInHeaders } from '../utils/axios';
 import { getFromLocalStorage } from '../utils/localStorage';
 
 class CustomerOrders extends Component {
@@ -19,19 +19,17 @@ class CustomerOrders extends Component {
     try {
       const { token } = getFromLocalStorage('user') || {};
 
-      const userData = await requestPost('/login/validate', { token });
+      const { id, role } = await requestPost('/login/validate', { token });
 
       setTokenInHeaders(token);
 
-      if (userData.role !== 'customer') {
-        history.push('/');
-      }
-      const results = await requestData('/customer/orders');
+      const results = await requestPost('/customer/orders', { id, role });
 
       this.setState({
         sales: [...results],
       });
     } catch (error) {
+      console.log(error);
       history.push('/');
     }
   }
@@ -39,40 +37,39 @@ class CustomerOrders extends Component {
   render() {
     const { history } = this.props;
     const { sales } = this.state;
-    // const sales = [{ id: 1,
-    //   status: 'status',
-    //   saleDate: '01/01/2022',
-    //   salePrice: '2.50' }];
 
     return (
       <>
         <NavBar history={ history } />
 
-        {sales[0].id && sales.map((order, index) => (
-          <button
-            type="button"
-            onClick={ `/customer/orders/${order.id}` }
-            key={ index }
-            id={ order.id }
-          >
-            <div key={ index }>
+        { sales.map((order, index) => (
+          <label key={ index } htmlFor={ order.id }>
+            <div>
               <span data-testid={ `customer_orders__element-order-id-${order.id}` }>
-                {order.id}
+                { order.id }
               </span>
               <span
                 data-testid={ `customer_orders__element-delivery-status-${order.id}` }
               >
-                {order.status}
+                { order.status }
               </span>
               <span data-testid={ `customer_orders__element-order-date-${order.id}` }>
-                {order.saleDate}
+                { new Date(order.saleDate).toLocaleDateString('pt-BR') }
               </span>
               <span data-testid={ `customer_orders__element-card-price-${order.id}` }>
-                {order.totalPrice}
+                { order.totalPrice.replace('.', ',') }
               </span>
             </div>
-          </button>
-        ))}
+            <button
+              type="button"
+              onClick={ () => history.push(`/customer/orders/${order.id}`) }
+              key={ index }
+              id={ order.id }
+            >
+              Botão
+            </button>
+          </label>
+        )) }
       </>
     );
   }

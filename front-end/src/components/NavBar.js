@@ -12,20 +12,22 @@ class NavBar extends Component {
   };
 
   render() {
-    const { userName } = this.props;
+    const { userName, history } = this.props;
     const { pathname } = window.location;
 
     return (
       <nav>
         { !pathname.includes('seller')
-        && (<GenericText
-          tag="h1"
+        && (<GenericButton
           datatestId="customer_products__element-navbar-link-products"
+          type="button"
+          onClick={ () => history.push('/customer/products') }
           text="Produtos"
         />) }
-        <GenericText
-          tag="h1"
+        <GenericButton
           datatestId="customer_products__element-navbar-link-orders"
+          type="button"
+          onClick={ () => history.push('/customer/orders') }
           text={ !pathname.includes('seller') ? 'Meus Pedidos' : 'Pedidos' }
         />
         <GenericText
