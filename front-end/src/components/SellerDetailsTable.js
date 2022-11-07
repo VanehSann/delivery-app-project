@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import GenericText from './GenericText';
 
-const dataTestIdTable = 'customer_order_details__element-order-table-';
+const dataTestIdTable = 'seller_order_details__element-order-table-';
 
-class CheckoutDetailsTable extends Component {
+class SellerDetailsTable extends Component {
   render() {
     const { headOptions, data } = this.props;
 
@@ -53,9 +53,9 @@ class CheckoutDetailsTable extends Component {
   }
 }
 
-CheckoutDetailsTable.propTypes = {
+SellerDetailsTable.propTypes = {
   headOptions: propTypes.arrayOf(propTypes.string).isRequired,
   data: propTypes.arrayOf(propTypes.shape).isRequired,
 };
 
-export default CheckoutDetailsTable;
+export default SellerDetailsTable;
