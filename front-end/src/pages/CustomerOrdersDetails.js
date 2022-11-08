@@ -95,7 +95,7 @@ class CustomerOrdersDetails extends Component {
               );
               return result;
             } }
-            disabled={ saleInfo.status === 'Pendente' }
+            disabled={ saleInfo.status !== 'Em Trânsito' }
             data-testid="customer_order_details__button-delivery-check"
           >
             Marcar como entregue

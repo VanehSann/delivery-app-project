@@ -39,12 +39,13 @@ class SellerOrdersDetails extends Component {
       });
     } catch (error) {
       console.log(error);
-      // history.push('/');
+      history.push('/');
     }
   }
 
   setCheckoutSum = () => {
     const { cart } = this.state;
+    console.log(cart, 'log do cart na seller Orders');
     const totalReduce = cart
       .reduce((acc, curr) => Number((acc + curr.total)), 0);
     return totalReduce.toFixed(2).replace('.', ',');
@@ -96,10 +97,13 @@ class SellerOrdersDetails extends Component {
             Preparar Pedido
           </button>
           <button
-            onClick={ async () => requestPut(
-              `seller/orders/${saleId}`,
-              { status: 'Em Trânsito' },
-            ) }
+            onClick={ async () => {
+              const result = await requestPut(
+                `seller/orders/${saleId}`,
+                { status: 'Em Trânsito' },
+              );
+              return result;
+            } }
             type="button"
             disabled={ saleInfo.status !== 'Preparando' }
             data-testid="seller_order_details__button-dispatch-check"

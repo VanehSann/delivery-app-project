@@ -1,6 +1,7 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { getFromLocalStorage } from '../utils/localStorage';
 import GenericButton from './GenericButton';
 import GenericText from './GenericText';
 
@@ -9,6 +10,15 @@ class NavBar extends Component {
     const { history } = this.props;
     localStorage.removeItem('user');
     history.push('/');
+  };
+
+  checkRole = () => {
+    const { history } = this.props;
+    const getRole = getFromLocalStorage('user');
+    if (getRole.role === 'seller') {
+      return history.push('/seller/orders');
+    }
+    return history.push('/customer/orders');
   };
 
   render() {
@@ -27,7 +37,7 @@ class NavBar extends Component {
         <GenericButton
           datatestId="customer_products__element-navbar-link-orders"
           type="button"
-          onClick={ () => history.push('/customer/orders') }
+          onClick={ () => this.checkRole() }
           text={ !pathname.includes('seller') ? 'Meus Pedidos' : 'Pedidos' }
         />
         <GenericText
