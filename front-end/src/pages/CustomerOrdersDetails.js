@@ -93,6 +93,8 @@ class CustomerOrdersDetails extends Component {
                 `customer/orders/${saleId}`,
                 { status: 'Entregue' },
               );
+              const resultsById = await requestData(`/customer/orders/${saleId}`);
+              this.setState({ saleInfo: resultsById });
               return result;
             } }
             disabled={ saleInfo.status !== 'Em Trânsito' }
