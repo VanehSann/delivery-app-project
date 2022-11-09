@@ -93,9 +93,11 @@ class CustomerOrdersDetails extends Component {
                 `customer/orders/${saleId}`,
                 { status: 'Entregue' },
               );
+              const resultsById = await requestData(`/customer/orders/${saleId}`);
+              this.setState({ saleInfo: resultsById });
               return result;
             } }
-            disabled={ saleInfo.status === 'Pendente' }
+            disabled={ saleInfo.status !== 'Em Trânsito' }
             data-testid="customer_order_details__button-delivery-check"
           >
             Marcar como entregue
